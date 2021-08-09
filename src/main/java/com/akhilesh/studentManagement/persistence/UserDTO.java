@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "user_details")
-public class UserDTO {
+public class UserDTO extends Auditable<String>{
 
     @Id
     @Column(name = "username")

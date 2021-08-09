@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RestController
@@ -26,6 +27,7 @@ public class PasswordResetController {
     private final UserPasswordResetCodeRepository resetCodeRepository;
     private final UserRepository userRepository;
     private final PasswordPolicyValidator passwordPolicyValidator;
+    private static final int TOKEN_TTL = 1;
 
     @Autowired
     public PasswordResetController(JavaMailSender mailSender,
@@ -47,9 +49,9 @@ public class PasswordResetController {
 
         String secretCode = RandomStringUtils.randomAlphanumeric(4);
         mail.setText("code: " + secretCode);
-        mailSender.send(mail);
-        final UserPasswordResetCodeDto resetCodeDtodto = new UserPasswordResetCodeDto(req.getEmail(), secretCode);
-        resetCodeRepository.save(resetCodeDtodto);
+        //mailSender.send(mail);
+        UserPasswordResetCodeDto resetCodeDto = new UserPasswordResetCodeDto(req.getEmail(), secretCode);
+        resetCodeRepository.save(resetCodeDto);
 
         return "password reset code has been sent over mail";
     }
@@ -62,15 +64,25 @@ public class PasswordResetController {
             return "password policy not met, couldn't reset password";
         }
 
+        String userId = req.getUserId();
         String providedSecretCode = req.getSecretToken();
-        final Optional<UserPasswordResetCodeDto> byId = resetCodeRepository.findById(req.getUserId());
+        Optional<UserPasswordResetCodeDto> byId = resetCodeRepository.findById(userId);
         if (byId.isEmpty()) {
             return "user not found, couldn't reset password";
         }
+
         UserPasswordResetCodeDto resetCodeDto = byId.get();
+        LocalDateTime tokenGenDate = resetCodeDto.getLastModifiedDate();
+        LocalDateTime now = LocalDateTime.now();
+        boolean isExpired = tokenGenDate.plusMinutes(TOKEN_TTL).isBefore(now);
+        if (isExpired) {
+            return "token expired, please generate password reset request again";
+        }
+
         String generatedSecretCode = resetCodeDto.getSecretCode();
-        if (generatedSecretCode.equals(providedSecretCode)) {
-            User user = new User(req.getUserId(), newPassword);
+        boolean isTokenValid = generatedSecretCode.equals(providedSecretCode);
+        if (isTokenValid) {
+            User user = new User(userId, newPassword);
             UserDTO updatedUser = new UserDTO(user);
             userRepository.save(updatedUser);
             return "password reset successful";

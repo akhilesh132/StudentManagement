@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "user_password_reset_codes")
-public class UserPasswordResetCodeDto {
+public class UserPasswordResetCodeDto extends Auditable<String>{
 
     private UserPasswordResetCodeDto() {
     }
