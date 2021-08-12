@@ -6,7 +6,7 @@ import com.akhilesh.studentManagement.persistence.UserDTO;
 import com.akhilesh.studentManagement.persistence.UserPasswordResetCodeDto;
 import com.akhilesh.studentManagement.persistence.UserPasswordResetCodeRepository;
 import com.akhilesh.studentManagement.persistence.UserRepository;
-import com.akhilesh.studentManagement.ports.models.request.PasswordResetRequest;
+import com.akhilesh.studentManagement.ports.models.request.PasswordResetReq;
 import com.akhilesh.studentManagement.ports.models.request.PasswordRestTokenGenerationReq;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +57,7 @@ public class PasswordResetController {
     }
 
     @PostMapping("/user/reset-password/reset")
-    String resetPassword(@Validated @RequestBody PasswordResetRequest req) {
+    String resetPassword(@Validated @RequestBody PasswordResetReq req) {
         String newPassword = req.getNewPassword();
         boolean isPasswordPolicyMet = passwordPolicyValidator.validate(newPassword);
         if (!isPasswordPolicyMet) {

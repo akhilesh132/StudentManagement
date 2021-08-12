@@ -1,12 +1,12 @@
 package com.akhilesh.studentManagement.ports.models.request;
 
-public class PasswordResetRequest {
+public class PasswordResetReq {
 
     private final String userId;
     private final String secretToken;
     private final String newPassword;
 
-    public PasswordResetRequest(String userId, String secretToken, String newPassword) {
+    public PasswordResetReq(String userId, String secretToken, String newPassword) {
         this.userId = userId;
         this.secretToken = secretToken;
         this.newPassword = newPassword;
