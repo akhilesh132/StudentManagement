@@ -1,4 +1,4 @@
-package com.akhilesh.studentManagement.ports.models;
+package com.akhilesh.studentManagement.ports.models.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 

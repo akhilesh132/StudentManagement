@@ -3,7 +3,7 @@ package com.akhilesh.studentManagement.ports.controllers;
 import com.akhilesh.studentManagement.domain.models.User;
 import com.akhilesh.studentManagement.persistence.UserDTO;
 import com.akhilesh.studentManagement.persistence.UserRepository;
-import com.akhilesh.studentManagement.ports.models.GenericResponse;
+import com.akhilesh.studentManagement.ports.models.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
