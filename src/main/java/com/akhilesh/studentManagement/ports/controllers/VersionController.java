@@ -1,4 +1,4 @@
-package com.akhilesh.studentManagement.controllers;
+package com.akhilesh.studentManagement.ports.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

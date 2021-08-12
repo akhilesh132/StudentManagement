@@ -1,4 +1,4 @@
-package com.akhilesh.studentManagement.request.models;
+package com.akhilesh.studentManagement.ports.models;
 
 public class PasswordResetRequest {
 

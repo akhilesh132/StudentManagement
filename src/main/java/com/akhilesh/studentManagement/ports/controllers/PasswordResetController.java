@@ -1,4 +1,4 @@
-package com.akhilesh.studentManagement.controllers;
+package com.akhilesh.studentManagement.ports.controllers;
 
 import com.akhilesh.studentManagement.domain.validators.PasswordPolicyValidator;
 import com.akhilesh.studentManagement.domain.models.User;
@@ -6,8 +6,8 @@ import com.akhilesh.studentManagement.persistence.UserDTO;
 import com.akhilesh.studentManagement.persistence.UserPasswordResetCodeDto;
 import com.akhilesh.studentManagement.persistence.UserPasswordResetCodeRepository;
 import com.akhilesh.studentManagement.persistence.UserRepository;
-import com.akhilesh.studentManagement.request.models.PasswordResetRequest;
-import com.akhilesh.studentManagement.request.models.PasswordRestTokenGenerationReq;
+import com.akhilesh.studentManagement.ports.models.PasswordResetRequest;
+import com.akhilesh.studentManagement.ports.models.PasswordRestTokenGenerationReq;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -72,7 +72,7 @@ public class PasswordResetController {
         }
 
         UserPasswordResetCodeDto resetCodeDto = byId.get();
-        LocalDateTime tokenGenDate = resetCodeDto.getLastModifiedDate();
+        LocalDateTime tokenGenDate = resetCodeDto.getGenerationDate();
         LocalDateTime now = LocalDateTime.now();
         boolean isExpired = tokenGenDate.plusMinutes(TOKEN_TTL).isBefore(now);
         if (isExpired) {

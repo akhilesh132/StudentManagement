@@ -1,9 +1,9 @@
-package com.akhilesh.studentManagement.controllers;
+package com.akhilesh.studentManagement.ports.controllers;
 
 import com.akhilesh.studentManagement.domain.models.User;
 import com.akhilesh.studentManagement.persistence.UserDTO;
 import com.akhilesh.studentManagement.persistence.UserRepository;
-import com.akhilesh.studentManagement.response.models.GenericResponse;
+import com.akhilesh.studentManagement.ports.models.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +20,7 @@ public class LoginController {
     private final UserRepository userRepository;
 
     private static final String INVALID_USERNAME_OR_PASSWORD = "invalid username or password";
+    private static final String LOGIN_SUCCESS_MESSAGE = "logged in";
 
     @Autowired
     public LoginController(UserRepository userRepository) {
@@ -30,13 +31,19 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<GenericResponse> login(@Validated @RequestBody User user) {
         Optional<UserDTO> byId = userRepository.findById(user.getUserId());
+
         if (byId.isEmpty()) {
-            return new ResponseEntity<>(new GenericResponse(INVALID_USERNAME_OR_PASSWORD), HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new GenericResponse(INVALID_USERNAME_OR_PASSWORD));
         }
+
         UserDTO userDTO = byId.get();
         if (userDTO.getPassword().equals(user.getPassword())) {
-            return new ResponseEntity<>(new GenericResponse("logged in"), HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new GenericResponse(LOGIN_SUCCESS_MESSAGE));
         }
-        return new ResponseEntity<>(new GenericResponse(INVALID_USERNAME_OR_PASSWORD), HttpStatus.OK);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new GenericResponse(INVALID_USERNAME_OR_PASSWORD));
     }
 }

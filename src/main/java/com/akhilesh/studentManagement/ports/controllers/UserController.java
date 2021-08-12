@@ -1,4 +1,4 @@
-package com.akhilesh.studentManagement.controllers;
+package com.akhilesh.studentManagement.ports.controllers;
 
 import com.akhilesh.studentManagement.domain.validators.PasswordPolicyValidator;
 import com.akhilesh.studentManagement.domain.models.User;
