@@ -2,12 +2,12 @@ package com.akhilesh.studentManagement.ports.models.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-public class PasswordRestTokenGenerationReq {
+public class PasswordResetTokenGenerationReq {
 
     private final String email;
 
     @JsonCreator
-    public PasswordRestTokenGenerationReq(String email) {
+    public PasswordResetTokenGenerationReq(String email) {
         this.email = email;
     }
 

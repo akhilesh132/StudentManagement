@@ -7,7 +7,7 @@ import com.akhilesh.studentManagement.persistence.UserPasswordResetCodeDto;
 import com.akhilesh.studentManagement.persistence.UserPasswordResetCodeRepository;
 import com.akhilesh.studentManagement.persistence.UserRepository;
 import com.akhilesh.studentManagement.ports.models.request.PasswordResetReq;
-import com.akhilesh.studentManagement.ports.models.request.PasswordRestTokenGenerationReq;
+import com.akhilesh.studentManagement.ports.models.request.PasswordResetTokenGenerationReq;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -41,7 +41,7 @@ public class PasswordResetController {
     }
 
     @PostMapping("/user/reset-password/generate-token")
-    String generatePasswordResetToken(@Validated @RequestBody PasswordRestTokenGenerationReq req) {
+    String generatePasswordResetToken(@Validated @RequestBody PasswordResetTokenGenerationReq req) {
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setFrom("rajakhil132@gmail.com");
         mail.setSubject("Password Reset Code");

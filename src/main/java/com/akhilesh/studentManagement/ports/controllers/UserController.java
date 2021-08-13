@@ -4,6 +4,7 @@ import com.akhilesh.studentManagement.domain.validators.PasswordPolicyValidator;
 import com.akhilesh.studentManagement.domain.models.User;
 import com.akhilesh.studentManagement.persistence.UserDTO;
 import com.akhilesh.studentManagement.persistence.UserRepository;
+import com.akhilesh.studentManagement.ports.models.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,24 +36,27 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    ResponseEntity<UserCreationRequestResponse> createUser(@Validated @RequestBody User s) {
+    ResponseEntity<GenericResponse> createUser(@Validated @RequestBody User s) {
 
         String password = s.getPassword();
         boolean isPasswdStrengthAcceptable = passwordPolicyValidator.validate(password);
         if (!isPasswdStrengthAcceptable) {
-            UserCreationRequestResponse responseBody = new UserCreationRequestResponse(PASSWORD_CRITERIA_NOT_MET_MESSAGE);
-            return new ResponseEntity<>(responseBody, HttpStatus.NOT_ACCEPTABLE);
+            GenericResponse responseBody = new GenericResponse(PASSWORD_CRITERIA_NOT_MET_MESSAGE);
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                    .body(responseBody);
         }
 
         boolean userAlreadyExists = userRepository.existsById(s.getUserId());
         if (userAlreadyExists) {
-            UserCreationRequestResponse responseBody = new UserCreationRequestResponse(USER_ALREADY_EXIST_MESSAGE);
-            return new ResponseEntity<>(responseBody, HttpStatus.CONFLICT);
+            GenericResponse responseBody = new GenericResponse(USER_ALREADY_EXIST_MESSAGE);
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(responseBody);
         }
 
         userRepository.save(new UserDTO(s));
-        UserCreationRequestResponse responseBody = new UserCreationRequestResponse(USER_CREATED_MESSAGE);
-        return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
+        GenericResponse responseBody = new GenericResponse(USER_CREATED_MESSAGE);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(responseBody);
     }
 
 
@@ -61,22 +65,5 @@ public class UserController {
         return "something went wrong !!";
     }
 
-    private static class UserCreationRequestResponse{
-         private final String message;
-         private final ZonedDateTime timestamp;
-
-        public UserCreationRequestResponse(String message) {
-            this.message = message;
-            this.timestamp = ZonedDateTime.now();
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public ZonedDateTime getTimestamp() {
-            return timestamp;
-        }
-    }
 
 }
