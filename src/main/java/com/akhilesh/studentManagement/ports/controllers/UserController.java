@@ -59,11 +59,4 @@ public class UserController {
                 .body(responseBody);
     }
 
-
-    @ExceptionHandler({Exception.class})
-    String errorHandler() {
-        return "something went wrong !!";
-    }
-
-
 }
