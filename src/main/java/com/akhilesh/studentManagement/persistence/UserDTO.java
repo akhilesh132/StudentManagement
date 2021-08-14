@@ -12,8 +12,8 @@ import javax.persistence.Table;
 public class UserDTO extends Auditable<String>{
 
     @Id
-    @Column(name = "username")
-    private  String username;
+    @Column(name = "userId")
+    private  String userId;
     @Column(name = "password")
     private  String password;
 
@@ -21,20 +21,12 @@ public class UserDTO extends Auditable<String>{
     }
 
     public UserDTO(User user)  {
-        this.username = user.getUsername();
+        this.userId = user.getUserId();
         this.password = user.getPassword();
     }
 
-    public String getUsername() {
-        return username;
-    }
-
     public String getUserId(){
-        return this.username;
-    }
-
-    public String getUserEmail(){
-        return this.username;
+        return this.userId;
     }
 
     public String getPassword() {

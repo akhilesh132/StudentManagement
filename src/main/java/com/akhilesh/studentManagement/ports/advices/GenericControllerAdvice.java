@@ -12,7 +12,8 @@ public class GenericControllerAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     @ExceptionHandler(Exception.class)
-    public String genericExceptionHandler(Exception e){
+    public String genericExceptionHandler(Exception e) {
         return "something went wrong";
     }
+
 }

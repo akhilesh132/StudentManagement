@@ -4,6 +4,7 @@ import com.akhilesh.studentManagement.domain.validators.PasswordPolicyValidator;
 import com.akhilesh.studentManagement.domain.models.User;
 import com.akhilesh.studentManagement.persistence.UserDTO;
 import com.akhilesh.studentManagement.persistence.UserRepository;
+import com.akhilesh.studentManagement.ports.models.request.UserRegistrationReq;
 import com.akhilesh.studentManagement.ports.models.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    ResponseEntity<GenericResponse> createUser(@Validated @RequestBody User s) {
+    ResponseEntity<GenericResponse> createUser(@Validated @RequestBody UserRegistrationReq s) {
 
         String password = s.getPassword();
         boolean isPasswdStrengthAcceptable = passwordPolicyValidator.validate(password);
@@ -46,14 +47,14 @@ public class UserController {
                     .body(responseBody);
         }
 
-        boolean userAlreadyExists = userRepository.existsById(s.getUserId());
+        boolean userAlreadyExists = userRepository.existsById(s.getEmailId());
         if (userAlreadyExists) {
             GenericResponse responseBody = new GenericResponse(USER_ALREADY_EXIST_MESSAGE);
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(responseBody);
         }
 
-        userRepository.save(new UserDTO(s));
+        //userRepository.save(new UserDTO(s));
         GenericResponse responseBody = new GenericResponse(USER_CREATED_MESSAGE);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(responseBody);

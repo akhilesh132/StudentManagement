@@ -6,10 +6,10 @@ public final class User {
 
     public User(String username, String password)  {
         if (username == null || username.isEmpty()) {
-            throw new IllegalArgumentException("username can not be empty");
+            throw new IllegalArgumentException("username can't be null or empty");
         }
-        if (password == null) {
-            throw new IllegalArgumentException("password can't be empty");
+        if (password == null || password.isEmpty()) {
+            throw new IllegalArgumentException("password can't be null or empty");
         }
         this.username = username;
         this.password = password;
