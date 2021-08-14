@@ -1,21 +1,16 @@
 package com.akhilesh.studentManagement.ports.controllers;
 
 import com.akhilesh.studentManagement.domain.validators.PasswordPolicyValidator;
-import com.akhilesh.studentManagement.domain.models.User;
-import com.akhilesh.studentManagement.persistence.UserDTO;
-import com.akhilesh.studentManagement.persistence.UserRepository;
+import com.akhilesh.studentManagement.persistence.repositories.UserRepository;
 import com.akhilesh.studentManagement.ports.models.request.UserRegistrationReq;
 import com.akhilesh.studentManagement.ports.models.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.ZonedDateTime;
 
 @RestController
 public class UserController {

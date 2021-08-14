@@ -1,6 +1,7 @@
-package com.akhilesh.studentManagement.persistence;
+package com.akhilesh.studentManagement.persistence.entities;
 
 import com.akhilesh.studentManagement.domain.models.User;
+import com.akhilesh.studentManagement.persistence.entities.Auditable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "user_details")
-public class UserDTO extends Auditable<String>{
+public class UserDTO extends Auditable<String> {
 
     @Id
     @Column(name = "userId")

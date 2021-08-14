@@ -1,8 +1,8 @@
 plugins {
-	id 'org.springframework.boot' version '2.4.0-SNAPSHOT'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'org.asciidoctor.convert' version '1.5.8'
-	id 'java'
+    id 'org.springframework.boot' version '2.4.0-SNAPSHOT'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.asciidoctor.convert' version '1.5.8'
+    id 'java'
 }
 
 group = 'com.akhilesh'
@@ -10,56 +10,56 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 repositories {
-	mavenCentral()
-	maven { url 'https://repo.spring.io/milestone' }
-	maven { url 'https://repo.spring.io/snapshot' }
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/snapshot' }
 }
 
 ext {
-	set('snippetsDir', file("build/generated-snippets"))
-	set('springCloudVersion', "2020.0.4-SNAPSHOT")
+    set('snippetsDir', file("build/generated-snippets"))
+    set('springCloudVersion', "2020.0.4-SNAPSHOT")
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	//implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.5.3'
-	implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
-	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.5.3'
+    implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
-	runtimeOnly 'mysql:mysql-connector-java'
+    runtimeOnly 'mysql:mysql-connector-java'
 
-	//testImplementation 'org.springframework.security:spring-security-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	//testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	implementation group: 'org.pitest', name: 'pitest', version: '1.6.8'
-	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.20.2'
-	implementation group: 'io.cucumber', name: 'cucumber-java', version: '6.11.0'
-	testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: '6.11.0'
-	implementation group: 'io.cucumber', name: 'cucumber-spring', version: '6.11.0'
+    //testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    //testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation group: 'org.pitest', name: 'pitest', version: '1.6.8'
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.20.2'
+    implementation group: 'io.cucumber', name: 'cucumber-java', version: '6.11.0'
+    testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: '6.11.0'
+    implementation group: 'io.cucumber', name: 'cucumber-spring', version: '6.11.0'
 
-	implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+    implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
 
-	implementation group: 'org.passay', name: 'passay', version: '1.6.1'
-	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+    implementation group: 'org.passay', name: 'passay', version: '1.6.1'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 
 }
 
 dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
 test {
-	outputs.dir snippetsDir
-	useJUnitPlatform()
+    outputs.dir snippetsDir
+    useJUnitPlatform()
 }
 
 asciidoctor {
-	inputs.dir snippetsDir
-	dependsOn test
+    inputs.dir snippetsDir
+    dependsOn test
 }

@@ -2,10 +2,10 @@ package com.akhilesh.studentManagement.ports.controllers;
 
 import com.akhilesh.studentManagement.domain.validators.PasswordPolicyValidator;
 import com.akhilesh.studentManagement.domain.models.User;
-import com.akhilesh.studentManagement.persistence.UserDTO;
-import com.akhilesh.studentManagement.persistence.UserPasswordResetCodeDto;
-import com.akhilesh.studentManagement.persistence.UserPasswordResetCodeRepository;
-import com.akhilesh.studentManagement.persistence.UserRepository;
+import com.akhilesh.studentManagement.persistence.entities.UserDTO;
+import com.akhilesh.studentManagement.persistence.entities.UserPasswordResetCodeDto;
+import com.akhilesh.studentManagement.persistence.repositories.UserPasswordResetCodeRepository;
+import com.akhilesh.studentManagement.persistence.repositories.UserRepository;
 import com.akhilesh.studentManagement.ports.models.request.PasswordResetReq;
 import com.akhilesh.studentManagement.ports.models.request.PasswordResetTokenGenerationReq;
 import org.apache.commons.lang3.RandomStringUtils;

@@ -1,6 +1,5 @@
 package com.akhilesh.studentManagement.persistence.config;
 
-import com.akhilesh.studentManagement.persistence.CurrentAuditorAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
