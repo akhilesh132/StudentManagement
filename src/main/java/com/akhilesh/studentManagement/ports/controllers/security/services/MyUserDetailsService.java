@@ -29,6 +29,7 @@ public class MyUserDetailsService implements UserDetailsService {
                 .accountExpired(false)
                 .accountLocked(false)
                 .credentialsExpired(false)
+                .authorities("user")
                 .build();
 
     }
