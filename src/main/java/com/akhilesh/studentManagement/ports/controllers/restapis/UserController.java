@@ -1,4 +1,4 @@
-package com.akhilesh.studentManagement.ports.controllers;
+package com.akhilesh.studentManagement.ports.controllers.restapis;
 
 import com.akhilesh.studentManagement.domain.validators.PasswordPolicyValidator;
 import com.akhilesh.studentManagement.persistence.repositories.UserRepository;

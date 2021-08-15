@@ -1,4 +1,4 @@
-package com.akhilesh.studentManagement.ports.controllers;
+package com.akhilesh.studentManagement.ports.controllers.restapis;
 
 import com.akhilesh.studentManagement.domain.models.User;
 import com.akhilesh.studentManagement.persistence.entities.UserDTO;

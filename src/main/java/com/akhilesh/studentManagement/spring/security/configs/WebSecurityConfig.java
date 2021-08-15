@@ -1,4 +1,4 @@
-package com.akhilesh.studentManagement.ports.controllers.security.configs;
+package com.akhilesh.studentManagement.spring.security.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
