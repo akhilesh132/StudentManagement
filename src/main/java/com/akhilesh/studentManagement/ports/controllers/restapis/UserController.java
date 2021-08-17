@@ -1,6 +1,6 @@
 package com.akhilesh.studentManagement.ports.controllers.restapis;
 
-import com.akhilesh.studentManagement.domain.validators.PasswordPolicyValidator;
+import com.akhilesh.studentManagement.security.validators.PasswordPolicyValidator;
 import com.akhilesh.studentManagement.persistence.repositories.UserRepository;
 import com.akhilesh.studentManagement.ports.models.request.UserRegistrationReq;
 import com.akhilesh.studentManagement.ports.models.response.GenericResponse;
@@ -35,8 +35,8 @@ public class UserController {
     ResponseEntity<GenericResponse> createUser(@Validated @RequestBody UserRegistrationReq s) {
 
         String password = s.getPassword();
-        boolean isPasswdStrengthAcceptable = passwordPolicyValidator.validate(password);
-        if (!isPasswdStrengthAcceptable) {
+        boolean passwdStrengthIsNotAcceptable = !passwordPolicyValidator.validate(password);
+        if (passwdStrengthIsNotAcceptable) {
             GenericResponse responseBody = new GenericResponse(PASSWORD_CRITERIA_NOT_MET_MESSAGE);
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
                     .body(responseBody);

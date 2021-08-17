@@ -1,6 +1,6 @@
 package com.akhilesh.studentManagement.ports.controllers.restapis;
 
-import com.akhilesh.studentManagement.domain.validators.PasswordPolicyValidator;
+import com.akhilesh.studentManagement.security.validators.PasswordPolicyValidator;
 import com.akhilesh.studentManagement.domain.models.User;
 import com.akhilesh.studentManagement.persistence.entities.UserDTO;
 import com.akhilesh.studentManagement.persistence.entities.UserPasswordResetCodeDto;

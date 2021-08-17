@@ -1,4 +1,4 @@
-package com.akhilesh.studentManagement.domain.validators;
+package com.akhilesh.studentManagement.security.validators;
 
 import org.passay.*;
 import org.springframework.stereotype.Component;

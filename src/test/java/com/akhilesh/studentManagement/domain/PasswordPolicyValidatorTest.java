@@ -1,6 +1,6 @@
 package com.akhilesh.studentManagement.domain;
 
-import com.akhilesh.studentManagement.domain.validators.PasswordPolicyValidator;
+import com.akhilesh.studentManagement.security.validators.PasswordPolicyValidator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
