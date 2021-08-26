@@ -4,7 +4,7 @@ public final class User {
     private final String username;
     private final String password;
 
-    public User(String username, String password)  {
+    public User(String username, String password) {
         if (username == null || username.isEmpty()) {
             throw new IllegalArgumentException("username can't be null or empty");
         }
@@ -18,11 +18,12 @@ public final class User {
     public String getUsername() {
         return this.username;
     }
-    public String getUserId(){
+
+    public String getUserId() {
         return this.username;
     }
 
-    public String getUserEmail(){
+    public String getUserEmail() {
         return this.username;
     }
 
