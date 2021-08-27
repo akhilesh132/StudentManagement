@@ -1,7 +1,8 @@
-package com.akhilesh.studentManagement.ports.controllers.restapis;
+package com.akhilesh.studentManagement.security.controllers;
 
-import com.akhilesh.studentManagement.ports.models.request.AuthenticationReq;
-import com.akhilesh.studentManagement.ports.models.response.AuthenticationResponse;
+
+import com.akhilesh.studentManagement.security.request.models.AuthenticationRequest;
+import com.akhilesh.studentManagement.security.response.models.AuthenticationResponse;
 import com.akhilesh.studentManagement.security.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class AuthenticationController {
     private JwtUtils jwtUtils = new JwtUtils();
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody @Validated AuthenticationReq req) {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody @Validated AuthenticationRequest req) {
         final String userId = req.getUserId();
         final String password = req.getPassword();
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userId, password));

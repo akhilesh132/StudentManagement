@@ -1,4 +1,4 @@
-package com.akhilesh.studentManagement.security.spring.services;
+package com.akhilesh.studentManagement.security.services;
 
 import com.akhilesh.studentManagement.persistence.entities.UserDTO;
 import com.akhilesh.studentManagement.persistence.repositories.UserRepository;

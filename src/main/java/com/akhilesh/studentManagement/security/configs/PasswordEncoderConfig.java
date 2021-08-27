@@ -1,4 +1,4 @@
-package com.akhilesh.studentManagement.security.spring.configs;
+package com.akhilesh.studentManagement.security.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
