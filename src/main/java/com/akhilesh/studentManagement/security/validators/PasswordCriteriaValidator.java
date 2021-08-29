@@ -4,7 +4,7 @@ import org.passay.*;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PasswordPolicyValidator {
+public class PasswordCriteriaValidator {
     private final char[] illegalCharacters = new char[]{'#'};
 
     public boolean validate(String password) {

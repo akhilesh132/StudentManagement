@@ -1,6 +1,6 @@
 package com.akhilesh.studentManagement.domain;
 
-import com.akhilesh.studentManagement.security.validators.PasswordPolicyValidator;
+import com.akhilesh.studentManagement.security.validators.PasswordCriteriaValidator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PasswordPolicyValidatorTest {
 
-    PasswordPolicyValidator validator = new PasswordPolicyValidator();
+    PasswordCriteriaValidator validator = new PasswordCriteriaValidator();
 
     @ParameterizedTest
     @ValueSource(strings = {

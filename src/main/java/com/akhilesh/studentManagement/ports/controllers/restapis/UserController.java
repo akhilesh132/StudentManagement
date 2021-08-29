@@ -1,6 +1,6 @@
 package com.akhilesh.studentManagement.ports.controllers.restapis;
 
-import com.akhilesh.studentManagement.security.validators.PasswordPolicyValidator;
+import com.akhilesh.studentManagement.security.validators.PasswordCriteriaValidator;
 import com.akhilesh.studentManagement.persistence.repositories.UserRepository;
 import com.akhilesh.studentManagement.ports.models.request.UserRegistrationReq;
 import com.akhilesh.studentManagement.ports.models.response.GenericResponse;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
-    private final PasswordPolicyValidator passwordPolicyValidator;
+    private final PasswordCriteriaValidator passwordPolicyValidator;
     private final UserRepository userRepository;
 
     private static final String PASSWORD_CRITERIA_NOT_MET_MESSAGE
@@ -26,7 +26,7 @@ public class UserController {
             = "user created";
 
     @Autowired
-    public UserController(PasswordPolicyValidator passwordPolicyValidator, UserRepository userRepository) {
+    public UserController(PasswordCriteriaValidator passwordPolicyValidator, UserRepository userRepository) {
         this.passwordPolicyValidator = passwordPolicyValidator;
         this.userRepository = userRepository;
     }

@@ -1,6 +1,6 @@
 package com.akhilesh.studentManagement.ports.controllers.restapis;
 
-import com.akhilesh.studentManagement.security.validators.PasswordPolicyValidator;
+import com.akhilesh.studentManagement.security.validators.PasswordCriteriaValidator;
 import com.akhilesh.studentManagement.domain.models.User;
 import com.akhilesh.studentManagement.persistence.entities.UserDTO;
 import com.akhilesh.studentManagement.persistence.entities.UserPasswordResetCodeDto;
@@ -26,14 +26,14 @@ public class PasswordResetController {
     private final JavaMailSender mailSender;
     private final UserPasswordResetCodeRepository resetCodeRepository;
     private final UserRepository userRepository;
-    private final PasswordPolicyValidator passwordPolicyValidator;
+    private final PasswordCriteriaValidator passwordPolicyValidator;
     private static final int TOKEN_TTL = 1;
 
     @Autowired
     public PasswordResetController(JavaMailSender mailSender,
                                    UserPasswordResetCodeRepository resetCodeRepository,
                                    UserRepository userRepository,
-                                   PasswordPolicyValidator passwordPolicyValidator) {
+                                   PasswordCriteriaValidator passwordPolicyValidator) {
         this.mailSender = mailSender;
         this.resetCodeRepository = resetCodeRepository;
         this.userRepository = userRepository;
