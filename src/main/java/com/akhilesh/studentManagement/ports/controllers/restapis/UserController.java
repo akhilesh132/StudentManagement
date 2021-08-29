@@ -1,5 +1,7 @@
 package com.akhilesh.studentManagement.ports.controllers.restapis;
 
+import com.akhilesh.studentManagement.security.domain.exceptions.PasswordCriteriaException;
+import com.akhilesh.studentManagement.security.domain.models.Password;
 import com.akhilesh.studentManagement.security.validators.PasswordCriteriaValidator;
 import com.akhilesh.studentManagement.persistence.repositories.UserRepository;
 import com.akhilesh.studentManagement.ports.models.request.UserRegistrationReq;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,27 +35,28 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    ResponseEntity<GenericResponse> createUser(@Validated @RequestBody UserRegistrationReq s) {
+    ResponseEntity<GenericResponse> createUser(@Validated @RequestBody UserRegistrationReq req)
+            throws PasswordCriteriaException {
 
-        String password = s.getPassword();
-        boolean passwdStrengthIsNotAcceptable = !passwordPolicyValidator.validate(password);
-        if (passwdStrengthIsNotAcceptable) {
-            GenericResponse responseBody = new GenericResponse(PASSWORD_CRITERIA_NOT_MET_MESSAGE);
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
-                    .body(responseBody);
-        }
+        Password password = new Password(req.getPassword());
 
-        boolean userAlreadyExists = userRepository.existsById(s.getEmailId());
+        boolean userAlreadyExists = userRepository.existsById(req.getEmailId());
         if (userAlreadyExists) {
             GenericResponse responseBody = new GenericResponse(USER_ALREADY_EXIST_MESSAGE);
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(responseBody);
         }
 
-        //userRepository.save(new UserDTO(s));
+        //userRepository.save(new UserDTO(req));
         GenericResponse responseBody = new GenericResponse(USER_CREATED_MESSAGE);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(responseBody);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<?> handlePasswordCriteriaException(PasswordCriteriaException pce){
+        GenericResponse responseBody = new GenericResponse(PASSWORD_CRITERIA_NOT_MET_MESSAGE);
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                .body(responseBody);
+    }
 }
