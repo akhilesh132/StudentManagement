@@ -1,6 +1,5 @@
 package com.akhilesh.studentManagement.security.domain.models;
 
-import com.akhilesh.studentManagement.security.domain.models.JwtExtractor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -17,7 +16,7 @@ public class JwtValidator {
         this.jwtExtractor = jwtExtractor;
     }
 
-    public boolean validate(com.akhilesh.studentManagement.security.domain.implementations.Jwt authToken, UserDetails userDetails) {
+    public boolean validate(Jwt authToken, UserDetails userDetails) {
          String jwt = authToken.value();
          String username = jwtExtractor.extractUsername(jwt);
         return username.equals(userDetails.getUsername()) && !isTokenExpired(jwt);
