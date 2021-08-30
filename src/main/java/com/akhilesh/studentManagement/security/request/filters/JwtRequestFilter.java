@@ -1,6 +1,6 @@
 package com.akhilesh.studentManagement.security.request.filters;
 
-import com.akhilesh.studentManagement.security.utils.JwtUtils;
+import com.akhilesh.studentManagement.security.domain.models.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,17 +21,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
     private UserDetailsService userDetailsService;
-    private final JwtUtils jwtUtils = new JwtUtils();
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authorizationHeader = request.getHeader("Authorization");
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer")) {
-            String jwt = authorizationHeader.substring(7);
-            String username = jwtUtils.extractUsername(jwt);
+            String bearerToken = authorizationHeader.substring(7);
+            Jwt jwt = Jwt.fromValue(bearerToken);
+            String username = jwt.extractUsername();
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            if (jwtUtils.validateToken(jwt, userDetails)) {
+            if (jwt.isValidFor(userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities()
                 );

@@ -1,9 +1,9 @@
 package com.akhilesh.studentManagement.security.controllers;
 
 
+import com.akhilesh.studentManagement.security.domain.models.Jwt;
 import com.akhilesh.studentManagement.security.request.models.AuthenticationRequest;
 import com.akhilesh.studentManagement.security.response.models.AuthenticationResponse;
-import com.akhilesh.studentManagement.security.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,17 +26,15 @@ public class AuthenticationController {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    private JwtUtils jwtUtils = new JwtUtils();
-
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody @Validated AuthenticationRequest req) {
         final String userId = req.getUserId();
         final String password = req.getPassword();
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userId, password));
         final UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
-        final String jwtToken = jwtUtils.generateToken(userDetails);
+        final Jwt jwt = Jwt.createFor(userDetails);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new AuthenticationResponse(jwtToken));
+                .body(new AuthenticationResponse(jwt.value()));
     }
 
     @ExceptionHandler(BadCredentialsException.class)
