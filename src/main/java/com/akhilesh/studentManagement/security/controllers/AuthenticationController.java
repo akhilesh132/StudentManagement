@@ -28,11 +28,15 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody @Validated AuthenticationRequest req) {
-        final String userId = req.getUserId();
-        final String password = req.getPassword();
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userId, password));
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
-        final Jwt jwt = Jwt.createFor(userDetails);
+
+        String userId = req.getUserId();
+        String password = req.getPassword();
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userId, password);
+
+        authenticationManager.authenticate(authToken);
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
+        Jwt jwt = Jwt.createFor(userDetails);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new AuthenticationResponse(jwt.value()));
     }

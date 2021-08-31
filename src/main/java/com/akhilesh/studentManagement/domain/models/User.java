@@ -1,15 +1,14 @@
 package com.akhilesh.studentManagement.domain.models;
 
+import com.akhilesh.studentManagement.security.domain.models.Password;
+
 public final class User {
     private final String username;
-    private final String password;
+    private final Password password;
 
-    public User(String username, String password) {
+    public User(String username, Password password) {
         if (username == null || username.isEmpty()) {
             throw new IllegalArgumentException("username can't be null or empty");
-        }
-        if (password == null || password.isEmpty()) {
-            throw new IllegalArgumentException("password can't be null or empty");
         }
         this.username = username;
         this.password = password;
@@ -25,10 +24,6 @@ public final class User {
 
     public String getUserEmail() {
         return this.username;
-    }
-
-    public String getPassword() {
-        return this.password;
     }
 
     @Override

@@ -1,5 +1,8 @@
 package com.akhilesh.studentManagement.ports.controllers.restapis;
 
+import com.akhilesh.studentManagement.ports.models.response.GenericResponse;
+import com.akhilesh.studentManagement.security.domain.exceptions.PasswordCriteriaException;
+import com.akhilesh.studentManagement.security.domain.models.Password;
 import com.akhilesh.studentManagement.security.validators.PasswordCriteriaValidator;
 import com.akhilesh.studentManagement.domain.models.User;
 import com.akhilesh.studentManagement.persistence.entities.UserDTO;
@@ -10,9 +13,12 @@ import com.akhilesh.studentManagement.ports.models.request.PasswordResetReq;
 import com.akhilesh.studentManagement.ports.models.request.PasswordResetTokenGenerationReq;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +32,7 @@ public class PasswordResetController {
     private final JavaMailSender mailSender;
     private final UserPasswordResetCodeRepository resetCodeRepository;
     private final UserRepository userRepository;
-    private final PasswordCriteriaValidator passwordPolicyValidator;
+
     private static final int TOKEN_TTL = 1;
 
     @Autowired
@@ -37,7 +43,7 @@ public class PasswordResetController {
         this.mailSender = mailSender;
         this.resetCodeRepository = resetCodeRepository;
         this.userRepository = userRepository;
-        this.passwordPolicyValidator = passwordPolicyValidator;
+
     }
 
     @PostMapping("/user/reset-password/generate-token")
@@ -57,12 +63,8 @@ public class PasswordResetController {
     }
 
     @PostMapping("/user/reset-password/reset")
-    String resetPassword(@Validated @RequestBody PasswordResetReq req) {
-        String newPassword = req.getNewPassword();
-        boolean isPasswordPolicyMet = passwordPolicyValidator.validate(newPassword);
-        if (!isPasswordPolicyMet) {
-            return "password policy not met, couldn't reset password";
-        }
+    String resetPassword(@Validated @RequestBody PasswordResetReq req) throws PasswordCriteriaException {
+        Password newPassword = new Password(req.getNewPassword());
 
         String userId = req.getUserId();
         String providedSecretCode = req.getSecretToken();
@@ -88,5 +90,11 @@ public class PasswordResetController {
             return "password reset successful";
         }
         return "couldn't reset password, please check username and secret code";
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<?> handlePasswordCriteriaException(PasswordCriteriaException pce) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new GenericResponse("password policy not met, couldn't reset password"));
     }
 }

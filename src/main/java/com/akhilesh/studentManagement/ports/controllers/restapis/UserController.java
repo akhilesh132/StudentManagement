@@ -34,15 +34,13 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    ResponseEntity<GenericResponse> createUser(@Validated @RequestBody UserRegistrationReq req)
+    ResponseEntity<?> createUser(@Validated @RequestBody UserRegistrationReq req)
             throws PasswordCriteriaException, UserAlreadyExistsException {
 
         Password password = new Password(req.getPassword());
 
         boolean userAlreadyExists = userRepository.existsById(req.getEmailId());
-        if (userAlreadyExists) {
-            throw new UserAlreadyExistsException();
-        }
+        if (userAlreadyExists) throw new UserAlreadyExistsException();
 
         //userRepository.save(new UserDTO(req));
         GenericResponse responseBody = new GenericResponse(USER_CREATED);
