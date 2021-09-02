@@ -1,8 +1,9 @@
-package com.akhilesh.studentManagement.ports.controllers.restapis;
+package com.akhilesh.studentManagement.security.controllers;
 
 import com.akhilesh.studentManagement.ports.models.response.GenericResponse;
 import com.akhilesh.studentManagement.security.domain.exceptions.PasswordCriteriaException;
 import com.akhilesh.studentManagement.security.domain.models.Password;
+import com.akhilesh.studentManagement.security.domain.models.RandomSecret;
 import com.akhilesh.studentManagement.security.validators.PasswordCriteriaValidator;
 import com.akhilesh.studentManagement.domain.models.User;
 import com.akhilesh.studentManagement.persistence.entities.UserDTO;
@@ -38,22 +39,21 @@ public class PasswordResetController {
     @Autowired
     public PasswordResetController(JavaMailSender mailSender,
                                    UserPasswordResetCodeRepository resetCodeRepository,
-                                   UserRepository userRepository,
-                                   PasswordCriteriaValidator passwordPolicyValidator) {
+                                   UserRepository userRepository) {
         this.mailSender = mailSender;
         this.resetCodeRepository = resetCodeRepository;
         this.userRepository = userRepository;
 
     }
 
-    @PostMapping("/user/reset-password/generate-token")
+    @PostMapping("/user/password/reset/generate-token")
     String generatePasswordResetToken(@Validated @RequestBody PasswordResetTokenGenerationReq req) {
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setFrom("rajakhil132@gmail.com");
         mail.setSubject("Password Reset Code");
         mail.setTo(req.getEmail());
 
-        String secretCode = RandomStringUtils.randomAlphanumeric(4);
+        String secretCode = new RandomSecret().value();
         mail.setText("code: " + secretCode);
         //mailSender.send(mail);
         UserPasswordResetCodeDto resetCodeDto = new UserPasswordResetCodeDto(req.getEmail(), secretCode);
@@ -89,7 +89,7 @@ public class PasswordResetController {
             userRepository.save(updatedUser);
             return "password reset successful";
         }
-        return "couldn't reset password, please check username and secret code";
+        return null;
     }
 
     @ExceptionHandler
