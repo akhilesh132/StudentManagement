@@ -24,14 +24,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class PasswordResetController {
 
     private final JavaMailSender mailSender;
-
-    UserRepository userRepository;
-    private static final int TOKEN_TTL = 1;
-    PasswordResetCodeRepository resetCodeRepository;
+    private final UserRepository userRepository;
+    private final PasswordResetCodeRepository resetCodeRepository;
 
     @Autowired
-    public PasswordResetController(JavaMailSender mailSender, PasswordResetCodeJpaRepository resetCodeRepository) {
+    public PasswordResetController(JavaMailSender mailSender,
+                                   UserRepository userRepository,
+                                   PasswordResetCodeRepository resetCodeRepository) {
         this.mailSender = mailSender;
+        this.userRepository = userRepository;
+        this.resetCodeRepository = resetCodeRepository;
     }
 
     @PostMapping("/user/password/reset/generate-token")
