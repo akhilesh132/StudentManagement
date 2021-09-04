@@ -4,10 +4,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-public class UserRegistrationReq {
+public class UserRegistrationRequest {
     @NotNull
     @NotBlank
-    private final String emailId;
+    private final String username;
     @NotNull
     @NotBlank
     @Pattern(regexp = "[0-9]{10}")
@@ -16,14 +16,14 @@ public class UserRegistrationReq {
     @NotBlank
     private final String password;
 
-    public UserRegistrationReq(String emailId, String mobileNumber, String password) {
-        this.emailId = emailId;
+    public UserRegistrationRequest(String username, String mobileNumber, String password) {
+        this.username = username;
         this.mobile = mobileNumber;
         this.password = password;
     }
 
-    public String getEmailId() {
-        return emailId;
+    public String getUsername() {
+        return username;
     }
 
     public String getMobileNumber() {

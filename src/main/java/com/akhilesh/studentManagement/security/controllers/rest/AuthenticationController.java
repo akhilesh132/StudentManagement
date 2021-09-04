@@ -1,4 +1,4 @@
-package com.akhilesh.studentManagement.security.controllers;
+package com.akhilesh.studentManagement.security.controllers.rest;
 
 
 import com.akhilesh.studentManagement.security.domain.models.Jwt;
@@ -29,7 +29,7 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody @Validated AuthenticationRequest req) {
 
-        String userId = req.getUserId();
+        String userId = req.getUsername();
         String password = req.getPassword();
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userId, password);
 

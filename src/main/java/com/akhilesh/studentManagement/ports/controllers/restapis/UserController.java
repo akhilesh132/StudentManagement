@@ -4,7 +4,7 @@ import com.akhilesh.studentManagement.persistence.repositories.UserJpaRepository
 import com.akhilesh.studentManagement.security.domain.exceptions.PasswordCriteriaException;
 import com.akhilesh.studentManagement.security.domain.exceptions.UserAlreadyExistsException;
 import com.akhilesh.studentManagement.security.domain.models.Password;
-import com.akhilesh.studentManagement.security.controllers.models.request.UserRegistrationReq;
+import com.akhilesh.studentManagement.security.controllers.models.request.UserRegistrationRequest;
 import com.akhilesh.studentManagement.security.controllers.models.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,12 +33,12 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    ResponseEntity<?> createUser(@Validated @RequestBody UserRegistrationReq req)
+    ResponseEntity<?> createUser(@Validated @RequestBody UserRegistrationRequest req)
             throws PasswordCriteriaException, UserAlreadyExistsException {
 
         Password password = new Password(req.getPassword());
 
-        boolean userAlreadyExists = userJpaRepository.existsById(req.getEmailId());
+        boolean userAlreadyExists = userJpaRepository.existsById(req.getUsername());
         if (userAlreadyExists) throw new UserAlreadyExistsException();
 
         //userJpaRepository.save(new UserDTO(req));

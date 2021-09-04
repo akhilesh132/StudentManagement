@@ -1,12 +1,12 @@
-package com.akhilesh.studentManagement.security.controllers;
+package com.akhilesh.studentManagement.security.controllers.rest;
 
 import com.akhilesh.studentManagement.security.controllers.models.response.GenericResponse;
 import com.akhilesh.studentManagement.security.domain.exceptions.PasswordCriteriaException;
 import com.akhilesh.studentManagement.security.domain.exceptions.UserNotFoundException;
 import com.akhilesh.studentManagement.security.domain.models.*;
 import com.akhilesh.studentManagement.persistence.repositories.PasswordResetCodeJpaRepository;
-import com.akhilesh.studentManagement.security.controllers.models.request.PasswordResetReq;
-import com.akhilesh.studentManagement.security.controllers.models.request.PasswordResetTokenGenerationReq;
+import com.akhilesh.studentManagement.security.controllers.models.request.PasswordResetRequest;
+import com.akhilesh.studentManagement.security.controllers.models.request.PasswordResetTokenRequest;
 import com.akhilesh.studentManagement.security.services.PasswordResetCodeRepository;
 import com.akhilesh.studentManagement.security.services.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,18 +35,18 @@ public class PasswordResetController {
     }
 
     @PostMapping("/user/password/reset/generate-token")
-    String generatePasswordResetToken(@Validated @RequestBody PasswordResetTokenGenerationReq req)
+    String generatePasswordResetToken(@Validated @RequestBody PasswordResetTokenRequest req)
             throws UserNotFoundException {
 
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setFrom("rajakhil132@gmail.com");
         mail.setSubject("Password Reset Code");
-        mail.setTo(req.getEmail());
+        mail.setTo(req.getUsername());
 
         String secretCode = new RandomSecret().value();
         mail.setText("code: " + secretCode);
         //mailSender.send(mail);
-        Username username = new Username(req.getEmail());
+        Username username = new Username(req.getUsername());
         User user = userRepository.findBy(username);
         PasswordResetCode passwordResetCode = PasswordResetCode.forUser(user);
         resetCodeRepository.save(passwordResetCode);
@@ -55,11 +55,11 @@ public class PasswordResetController {
     }
 
     @PostMapping("/user/reset-password/reset")
-    String resetPassword(@Validated @RequestBody PasswordResetReq req)
+    String resetPassword(@Validated @RequestBody PasswordResetRequest req)
             throws PasswordCriteriaException, UserNotFoundException {
 
         Password newPassword = new Password(req.getNewPassword());
-        Username username = new Username(req.getUserId());
+        Username username = new Username(req.getUsername());
 
         User user = userRepository.findBy(username);
         PasswordResetCode passwordResetCode = resetCodeRepository.findForUser(user);

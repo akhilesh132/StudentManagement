@@ -3,10 +3,10 @@ package com.akhilesh.studentManagement.security.controllers.models.request;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class PasswordResetReq {
+public class PasswordResetRequest {
     @NotNull
     @NotBlank
-    private final String userId;
+    private final String username;
     @NotNull
     @NotBlank
     private final String secretToken;
@@ -14,14 +14,14 @@ public class PasswordResetReq {
     @NotBlank
     private final String newPassword;
 
-    public PasswordResetReq(String userId, String secretToken, String newPassword) {
-        this.userId = userId;
+    public PasswordResetRequest(String username, String secretToken, String newPassword) {
+        this.username = username;
         this.secretToken = secretToken;
         this.newPassword = newPassword;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
     public String getSecretToken() {
