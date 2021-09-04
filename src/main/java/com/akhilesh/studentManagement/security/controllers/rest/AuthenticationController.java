@@ -26,7 +26,8 @@ public class AuthenticationController {
     @Autowired
     private final UserDetailsService userDetailsService;
 
-    public AuthenticationController(AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
+    public AuthenticationController(AuthenticationManager authenticationManager,
+                                    UserDetailsService userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
     }
@@ -34,13 +35,13 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody @Validated AuthenticationRequest req) {
 
-        String userId = req.getUsername();
+        String username = req.getUsername();
         String password = req.getPassword();
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userId, password);
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
 
         authenticationManager.authenticate(authToken);
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         Jwt jwt = Jwt.createFor(userDetails);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new AuthenticationResponse(jwt.value()));
