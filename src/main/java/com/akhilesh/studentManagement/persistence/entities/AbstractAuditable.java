@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class Auditable<U> {
+public abstract class AbstractAuditable<U> {
 
     @CreatedBy
     protected U createdBy;
@@ -26,19 +26,4 @@ public abstract class Auditable<U> {
     @LastModifiedDate
     protected LocalDateTime lastModifiedDate;
 
-    public U getCreatedBy() {
-        return createdBy;
-    }
-
-    public U getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public LocalDateTime getLastModifiedDate() {
-        return lastModifiedDate;
-    }
 }

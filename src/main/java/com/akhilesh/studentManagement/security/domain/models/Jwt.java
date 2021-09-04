@@ -34,10 +34,6 @@ public class Jwt {
         return fromValue(token);
     }
 
-    public String value() {
-        return value;
-    }
-
     public boolean isValidFor(UserDetails userDetails) {
         if (userDetails == null) return false;
         String username = extractUsername();
@@ -49,6 +45,10 @@ public class Jwt {
                 .setSigningKey(SECRET)
                 .parseClaimsJws(value)
                 .getBody();
+    }
+
+    public String value() {
+        return value;
     }
 
     public <T> T extractClaim(Function<Claims, T> claimResolver) {
@@ -72,16 +72,5 @@ public class Jwt {
     private boolean isNotExpired() {
         return !isExpired();
     }
-
-    private String createToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .signWith(SignatureAlgorithm.HS256, SECRET)
-                .compact();
-    }
-
 
 }

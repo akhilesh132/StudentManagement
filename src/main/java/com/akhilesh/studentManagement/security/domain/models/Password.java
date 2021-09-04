@@ -23,7 +23,7 @@ public final class Password {
         this.value = password;
     }
 
-    public String getValue() {
+    public String value() {
         return value;
     }
 

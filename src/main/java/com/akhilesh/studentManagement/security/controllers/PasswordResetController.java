@@ -2,17 +2,15 @@ package com.akhilesh.studentManagement.security.controllers;
 
 import com.akhilesh.studentManagement.ports.models.response.GenericResponse;
 import com.akhilesh.studentManagement.security.domain.exceptions.PasswordCriteriaException;
-import com.akhilesh.studentManagement.security.domain.models.Password;
-import com.akhilesh.studentManagement.security.domain.models.RandomSecret;
-import com.akhilesh.studentManagement.security.validators.PasswordCriteriaValidator;
-import com.akhilesh.studentManagement.domain.models.User;
-import com.akhilesh.studentManagement.persistence.entities.UserDTO;
+import com.akhilesh.studentManagement.security.domain.exceptions.UserNotFoundException;
+import com.akhilesh.studentManagement.security.domain.models.*;
 import com.akhilesh.studentManagement.persistence.entities.UserPasswordResetCodeDto;
-import com.akhilesh.studentManagement.persistence.repositories.UserPasswordResetCodeRepository;
-import com.akhilesh.studentManagement.persistence.repositories.UserRepository;
+import com.akhilesh.studentManagement.persistence.repositories.PasswordResetCodeJpaRepository;
+import com.akhilesh.studentManagement.persistence.repositories.UserJpaRepository;
 import com.akhilesh.studentManagement.ports.models.request.PasswordResetReq;
 import com.akhilesh.studentManagement.ports.models.request.PasswordResetTokenGenerationReq;
-import org.apache.commons.lang3.RandomStringUtils;
+import com.akhilesh.studentManagement.security.services.PasswordResetCodeRepository;
+import com.akhilesh.studentManagement.security.services.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,23 +29,20 @@ import java.util.Optional;
 public class PasswordResetController {
 
     private final JavaMailSender mailSender;
-    private final UserPasswordResetCodeRepository resetCodeRepository;
-    private final UserRepository userRepository;
 
+    UserRepository userRepository;
     private static final int TOKEN_TTL = 1;
+    PasswordResetCodeRepository resetCodeRepository;
 
     @Autowired
-    public PasswordResetController(JavaMailSender mailSender,
-                                   UserPasswordResetCodeRepository resetCodeRepository,
-                                   UserRepository userRepository) {
+    public PasswordResetController(JavaMailSender mailSender, PasswordResetCodeJpaRepository resetCodeRepository) {
         this.mailSender = mailSender;
-        this.resetCodeRepository = resetCodeRepository;
-        this.userRepository = userRepository;
-
     }
 
     @PostMapping("/user/password/reset/generate-token")
-    String generatePasswordResetToken(@Validated @RequestBody PasswordResetTokenGenerationReq req) {
+    String generatePasswordResetToken(@Validated @RequestBody PasswordResetTokenGenerationReq req)
+            throws UserNotFoundException {
+
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setFrom("rajakhil132@gmail.com");
         mail.setSubject("Password Reset Code");
@@ -56,39 +51,36 @@ public class PasswordResetController {
         String secretCode = new RandomSecret().value();
         mail.setText("code: " + secretCode);
         //mailSender.send(mail);
-        UserPasswordResetCodeDto resetCodeDto = new UserPasswordResetCodeDto(req.getEmail(), secretCode);
-        resetCodeRepository.save(resetCodeDto);
+        Username username = new Username(req.getEmail());
+        User user = userRepository.findBy(username);
+        PasswordResetCode passwordResetCode = PasswordResetCode.forUser(user);
+        resetCodeRepository.save(passwordResetCode);
 
         return "password reset code has been sent over mail";
     }
 
     @PostMapping("/user/reset-password/reset")
-    String resetPassword(@Validated @RequestBody PasswordResetReq req) throws PasswordCriteriaException {
+    String resetPassword(@Validated @RequestBody PasswordResetReq req)
+            throws PasswordCriteriaException, UserNotFoundException {
+
         Password newPassword = new Password(req.getNewPassword());
+        Username username = new Username(req.getUserId());
 
-        String userId = req.getUserId();
-        String providedSecretCode = req.getSecretToken();
-        Optional<UserPasswordResetCodeDto> byId = resetCodeRepository.findById(userId);
-        if (byId.isEmpty()) {
-            return "user not found, couldn't reset password";
-        }
-
-        UserPasswordResetCodeDto resetCodeDto = byId.get();
-        LocalDateTime tokenGenDate = resetCodeDto.getGenerationDate();
-        LocalDateTime now = LocalDateTime.now();
-        boolean isExpired = tokenGenDate.plusMinutes(TOKEN_TTL).isBefore(now);
-        if (isExpired) {
+        User user = userRepository.findBy(username);
+        PasswordResetCode passwordResetCode = resetCodeRepository.findForUser(user);
+        boolean resetCodeExpired = passwordResetCode.isExpired();
+        if (resetCodeExpired) {
             return "token expired, please generate password reset request again";
         }
+        String providedSecretCode = req.getSecretToken();
 
-        String generatedSecretCode = resetCodeDto.getSecretCode();
-        boolean isTokenValid = generatedSecretCode.equals(providedSecretCode);
-        if (isTokenValid) {
-            User user = new User(userId, newPassword);
-            UserDTO updatedUser = new UserDTO(user);
-            userRepository.save(updatedUser);
-            return "password reset successful";
-        }
+        boolean isTokenValid = passwordResetCode.value().equals(providedSecretCode);
+//        if (isTokenValid) {
+//            User user = new User(userId, newPassword);
+//            UserDTO updatedUser = new UserDTO(user);
+//            userJpaRepository.save(updatedUser);
+//            return "password reset successful";
+//        }
         return null;
     }
 

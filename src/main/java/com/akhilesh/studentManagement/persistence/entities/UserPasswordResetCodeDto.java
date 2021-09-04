@@ -1,7 +1,5 @@
 package com.akhilesh.studentManagement.persistence.entities;
 
-import com.akhilesh.studentManagement.persistence.entities.Auditable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user_password_reset_codes")
-public class UserPasswordResetCodeDto extends Auditable<String> {
+public class UserPasswordResetCodeDto extends AbstractAuditable<String> {
 
     @Id
     @Column(name = "username")

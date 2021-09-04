@@ -1,10 +1,9 @@
 package com.akhilesh.studentManagement.ports.controllers.restapis;
 
+import com.akhilesh.studentManagement.persistence.repositories.UserJpaRepository;
 import com.akhilesh.studentManagement.security.domain.exceptions.PasswordCriteriaException;
 import com.akhilesh.studentManagement.security.domain.exceptions.UserAlreadyExistsException;
 import com.akhilesh.studentManagement.security.domain.models.Password;
-import com.akhilesh.studentManagement.security.validators.PasswordCriteriaValidator;
-import com.akhilesh.studentManagement.persistence.repositories.UserRepository;
 import com.akhilesh.studentManagement.ports.models.request.UserRegistrationReq;
 import com.akhilesh.studentManagement.ports.models.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserJpaRepository userJpaRepository;
 
     private static final String PASSWORD_CRITERIA_NOT_MET
             = "password doesn't meet acceptance criteria, user not created";
@@ -29,8 +28,8 @@ public class UserController {
             = "user created";
 
     @Autowired
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserJpaRepository userJpaRepository) {
+        this.userJpaRepository = userJpaRepository;
     }
 
     @PostMapping("/users")
@@ -39,10 +38,10 @@ public class UserController {
 
         Password password = new Password(req.getPassword());
 
-        boolean userAlreadyExists = userRepository.existsById(req.getEmailId());
+        boolean userAlreadyExists = userJpaRepository.existsById(req.getEmailId());
         if (userAlreadyExists) throw new UserAlreadyExistsException();
 
-        //userRepository.save(new UserDTO(req));
+        //userJpaRepository.save(new UserDTO(req));
         GenericResponse responseBody = new GenericResponse(USER_CREATED);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(responseBody);

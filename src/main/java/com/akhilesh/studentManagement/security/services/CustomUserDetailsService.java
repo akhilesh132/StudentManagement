@@ -1,7 +1,7 @@
 package com.akhilesh.studentManagement.security.services;
 
 import com.akhilesh.studentManagement.persistence.entities.UserDTO;
-import com.akhilesh.studentManagement.persistence.repositories.UserRepository;
+import com.akhilesh.studentManagement.persistence.repositories.UserJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,11 +13,11 @@ import java.util.Optional;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    UserRepository userRepository;
+    UserJpaRepository userJpaRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserDTO> byId = userRepository.findById(username);
+        Optional<UserDTO> byId = userJpaRepository.findById(username);
         if (byId.isEmpty()) {
             throw new UsernameNotFoundException("user not found with user id: " + username);
         }

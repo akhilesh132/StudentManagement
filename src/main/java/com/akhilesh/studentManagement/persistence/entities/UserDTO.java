@@ -1,32 +1,30 @@
 package com.akhilesh.studentManagement.persistence.entities;
 
-import com.akhilesh.studentManagement.domain.models.User;
-import com.akhilesh.studentManagement.persistence.entities.Auditable;
+import com.akhilesh.studentManagement.security.domain.models.User;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table(name = "user_details")
-public class UserDTO extends Auditable<String> {
+public class UserDTO extends AbstractAuditable<String> {
 
     @Id
+    @GeneratedValue
     @Column(name = "userId")
-    private  String userId;
+    private String userId;
     @Column(name = "password")
-    private  String password;
+    private String password;
 
     private UserDTO() {
     }
 
-    public UserDTO(User user)  {
-        this.userId = user.getUserId();
-        this.password = user.getPassword();
+    public UserDTO(User user) {
+
+
     }
 
-    public String getUserId(){
+    public String getUserId() {
         return this.userId;
     }
 
