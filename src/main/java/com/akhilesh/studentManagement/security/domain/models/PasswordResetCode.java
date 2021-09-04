@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import static java.time.LocalDateTime.now;
 
-public class PasswordResetCode {
+public final class PasswordResetCode {
     private final Username username;
     private final RandomSecret secretCode;
     private final LocalDateTime creationTime;
