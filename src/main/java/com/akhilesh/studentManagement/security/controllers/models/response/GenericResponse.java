@@ -1,4 +1,4 @@
-package com.akhilesh.studentManagement.ports.models.response;
+package com.akhilesh.studentManagement.security.controllers.models.response;
 
 import java.time.LocalDateTime;
 

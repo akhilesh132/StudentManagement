@@ -1,14 +1,12 @@
 package com.akhilesh.studentManagement.security.controllers;
 
-import com.akhilesh.studentManagement.ports.models.response.GenericResponse;
+import com.akhilesh.studentManagement.security.controllers.models.response.GenericResponse;
 import com.akhilesh.studentManagement.security.domain.exceptions.PasswordCriteriaException;
 import com.akhilesh.studentManagement.security.domain.exceptions.UserNotFoundException;
 import com.akhilesh.studentManagement.security.domain.models.*;
-import com.akhilesh.studentManagement.persistence.entities.UserPasswordResetCodeDto;
 import com.akhilesh.studentManagement.persistence.repositories.PasswordResetCodeJpaRepository;
-import com.akhilesh.studentManagement.persistence.repositories.UserJpaRepository;
-import com.akhilesh.studentManagement.ports.models.request.PasswordResetReq;
-import com.akhilesh.studentManagement.ports.models.request.PasswordResetTokenGenerationReq;
+import com.akhilesh.studentManagement.security.controllers.models.request.PasswordResetReq;
+import com.akhilesh.studentManagement.security.controllers.models.request.PasswordResetTokenGenerationReq;
 import com.akhilesh.studentManagement.security.services.PasswordResetCodeRepository;
 import com.akhilesh.studentManagement.security.services.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +19,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 @RestController
 public class PasswordResetController {

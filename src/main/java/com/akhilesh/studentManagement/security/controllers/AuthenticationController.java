@@ -2,8 +2,8 @@ package com.akhilesh.studentManagement.security.controllers;
 
 
 import com.akhilesh.studentManagement.security.domain.models.Jwt;
-import com.akhilesh.studentManagement.security.request.models.AuthenticationRequest;
-import com.akhilesh.studentManagement.security.response.models.AuthenticationResponse;
+import com.akhilesh.studentManagement.security.controllers.models.request.AuthenticationRequest;
+import com.akhilesh.studentManagement.security.controllers.models.response.AuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -4,8 +4,8 @@ import com.akhilesh.studentManagement.persistence.repositories.UserJpaRepository
 import com.akhilesh.studentManagement.security.domain.exceptions.PasswordCriteriaException;
 import com.akhilesh.studentManagement.security.domain.exceptions.UserAlreadyExistsException;
 import com.akhilesh.studentManagement.security.domain.models.Password;
-import com.akhilesh.studentManagement.ports.models.request.UserRegistrationReq;
-import com.akhilesh.studentManagement.ports.models.response.GenericResponse;
+import com.akhilesh.studentManagement.security.controllers.models.request.UserRegistrationReq;
+import com.akhilesh.studentManagement.security.controllers.models.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

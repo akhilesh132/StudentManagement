@@ -1,4 +1,4 @@
-package com.akhilesh.studentManagement.security.request.models;
+package com.akhilesh.studentManagement.security.controllers.models.request;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

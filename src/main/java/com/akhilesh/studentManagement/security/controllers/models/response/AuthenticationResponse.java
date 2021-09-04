@@ -1,4 +1,4 @@
-package com.akhilesh.studentManagement.security.response.models;
+package com.akhilesh.studentManagement.security.controllers.models.response;
 
 public class AuthenticationResponse {
 
