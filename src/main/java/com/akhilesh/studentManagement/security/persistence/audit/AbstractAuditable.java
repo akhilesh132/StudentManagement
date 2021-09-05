@@ -1,4 +1,4 @@
-package com.akhilesh.studentManagement.persistence.entities;
+package com.akhilesh.studentManagement.security.persistence.audit;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;

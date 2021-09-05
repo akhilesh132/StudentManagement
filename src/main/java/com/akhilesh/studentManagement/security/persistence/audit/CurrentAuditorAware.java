@@ -1,4 +1,4 @@
-package com.akhilesh.studentManagement.persistence.config;
+package com.akhilesh.studentManagement.security.persistence.audit;
 
 import org.springframework.data.domain.AuditorAware;
 

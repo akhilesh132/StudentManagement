@@ -1,4 +1,4 @@
-package com.akhilesh.studentManagement.security.configs;
+package com.akhilesh.studentManagement.security.beans;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-public class AuthProviderConfig {
+public class AuthProviderBean {
 
     @Autowired
     UserDetailsService userDetailsService;

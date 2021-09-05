@@ -1,7 +1,7 @@
 package com.akhilesh.studentManagement.security.services;
 
-import com.akhilesh.studentManagement.persistence.entities.UserDTO;
-import com.akhilesh.studentManagement.persistence.repositories.UserJpaRepository;
+import com.akhilesh.studentManagement.security.persistence.entities.UserDTO;
+import com.akhilesh.studentManagement.security.persistence.repositories.UserJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,6 +1,6 @@
 package com.akhilesh.studentManagement.ports.controllers.restapis;
 
-import com.akhilesh.studentManagement.persistence.repositories.UserJpaRepository;
+import com.akhilesh.studentManagement.security.persistence.repositories.UserJpaRepository;
 import com.akhilesh.studentManagement.security.domain.exceptions.PasswordCriteriaException;
 import com.akhilesh.studentManagement.security.domain.exceptions.UserAlreadyExistsException;
 import com.akhilesh.studentManagement.security.domain.models.Password;

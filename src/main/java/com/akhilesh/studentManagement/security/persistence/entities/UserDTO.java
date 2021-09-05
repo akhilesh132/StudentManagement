@@ -1,9 +1,9 @@
-package com.akhilesh.studentManagement.persistence.entities;
+package com.akhilesh.studentManagement.security.persistence.entities;
 
 import com.akhilesh.studentManagement.security.domain.models.User;
+import com.akhilesh.studentManagement.security.persistence.audit.AbstractAuditable;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Table(name = "user_details")

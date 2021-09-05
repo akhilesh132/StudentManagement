@@ -1,4 +1,6 @@
-package com.akhilesh.studentManagement.persistence.entities;
+package com.akhilesh.studentManagement.security.persistence.entities;
+
+import com.akhilesh.studentManagement.security.persistence.audit.AbstractAuditable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
