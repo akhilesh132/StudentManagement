@@ -5,13 +5,21 @@ import org.apache.commons.lang3.RandomStringUtils;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-public final class RandomSecret {
+public final class SecretCode {
     @NotNull
     @NotEmpty
     private final String secretCode;
 
-    public RandomSecret() {
+    public SecretCode() {
         this.secretCode = RandomStringUtils.randomAlphanumeric(4);
+    }
+
+    public static SecretCode withValue(String secretCode) {
+        return new SecretCode(secretCode);
+    }
+
+    private SecretCode(String secretCode) {
+        this.secretCode = secretCode;
     }
 
     public String value() {
@@ -23,7 +31,7 @@ public final class RandomSecret {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        RandomSecret that = (RandomSecret) o;
+        SecretCode that = (SecretCode) o;
 
         return secretCode.equals(that.secretCode);
     }
@@ -35,7 +43,7 @@ public final class RandomSecret {
 
     @Override
     public String toString() {
-        return "RandomSecret{" +
+        return "SecretCode{" +
                 "secretCode='" + "xxxx" + '\'' +
                 '}';
     }

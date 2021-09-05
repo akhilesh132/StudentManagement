@@ -3,9 +3,11 @@ package com.akhilesh.studentManagement.security.services;
 import com.akhilesh.studentManagement.security.domain.models.PasswordResetCode;
 import com.akhilesh.studentManagement.security.domain.models.User;
 
-public interface PasswordResetCodeRepository {
-    
+import java.util.Optional;
+
+public interface PasswordResetCodeService {
+
     void save(PasswordResetCode passwordResetCode);
 
-    PasswordResetCode findForUser(User user);
+    Optional<PasswordResetCode> findForUser(User user);
 }

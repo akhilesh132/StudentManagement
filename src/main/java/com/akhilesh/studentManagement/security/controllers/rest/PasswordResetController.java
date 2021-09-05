@@ -6,8 +6,8 @@ import com.akhilesh.studentManagement.security.domain.exceptions.UserNotFoundExc
 import com.akhilesh.studentManagement.security.domain.models.*;
 import com.akhilesh.studentManagement.security.controllers.models.request.PasswordResetRequest;
 import com.akhilesh.studentManagement.security.controllers.models.request.PasswordResetTokenRequest;
-import com.akhilesh.studentManagement.security.services.PasswordResetCodeRepository;
-import com.akhilesh.studentManagement.security.services.UserRepository;
+import com.akhilesh.studentManagement.security.services.PasswordResetCodeService;
+import com.akhilesh.studentManagement.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,19 +19,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 public class PasswordResetController {
 
     private final JavaMailSender mailSender;
-    private final UserRepository userRepository;
-    private final PasswordResetCodeRepository resetCodeRepository;
+    private final UserService userService;
+    private final PasswordResetCodeService resetCodeRepository;
 
     @Autowired
     public PasswordResetController(JavaMailSender mailSender,
-                                   UserRepository userRepository,
-                                   PasswordResetCodeRepository resetCodeRepository) {
+                                   UserService userService,
+                                   PasswordResetCodeService resetCodeRepository) {
         this.mailSender = mailSender;
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.resetCodeRepository = resetCodeRepository;
     }
 
@@ -44,33 +46,39 @@ public class PasswordResetController {
         mail.setSubject("Password Reset Code");
         mail.setTo(req.getUsername());
 
-        String secretCode = new RandomSecret().value();
+        String secretCode = new SecretCode().value();
         mail.setText("code: " + secretCode);
         //mailSender.send(mail);
         Username username = new Username(req.getUsername());
-        User user = userRepository.findBy(username);
+        User user = userService.findBy(username);
         PasswordResetCode passwordResetCode = PasswordResetCode.forUser(user);
         resetCodeRepository.save(passwordResetCode);
 
         return "password reset code has been sent over mail";
     }
 
-    @PostMapping("/user/reset-password/reset")
+    @PostMapping("/user/password/reset/password-reset")
     String resetPassword(@Validated @RequestBody PasswordResetRequest req)
             throws PasswordCriteriaException, UserNotFoundException {
 
         Password newPassword = new Password(req.getUpdatedPassword());
         Username username = new Username(req.getUsername());
 
-        User user = userRepository.findBy(username);
-        PasswordResetCode passwordResetCode = resetCodeRepository.findForUser(user);
-        boolean resetCodeExpired = passwordResetCode.isExpired();
-        if (resetCodeExpired) {
+        User user = userService.findBy(username);
+        Optional<PasswordResetCode> byUsername = resetCodeRepository.findForUser(user);
+        if (byUsername.isEmpty()) {
+            return "no password reset token exists";
+        }
+        PasswordResetCode passwordResetCode = byUsername.get();
+
+        boolean resetCodeIsExpired = passwordResetCode.isExpired();
+        if (resetCodeIsExpired) {
             return "token expired, please generate password reset request again";
         }
-        String providedSecretCode = req.getSecretToken();
 
+        String providedSecretCode = req.getSecretToken();
         boolean isTokenValid = passwordResetCode.value().equals(providedSecretCode);
+
 //        if (isTokenValid) {
 //            User user = new User(userId, newPassword);
 //            UserDTO updatedUser = new UserDTO(user);

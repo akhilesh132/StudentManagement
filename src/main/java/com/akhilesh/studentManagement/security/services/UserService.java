@@ -4,7 +4,7 @@ import com.akhilesh.studentManagement.security.domain.exceptions.UserNotFoundExc
 import com.akhilesh.studentManagement.security.domain.models.User;
 import com.akhilesh.studentManagement.security.domain.models.Username;
 
-public interface UserRepository {
+public interface UserService {
 
     void save(User user);
 

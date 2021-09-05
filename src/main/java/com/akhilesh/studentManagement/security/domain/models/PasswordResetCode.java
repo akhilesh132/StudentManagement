@@ -6,13 +6,20 @@ import static java.time.LocalDateTime.now;
 
 public final class PasswordResetCode {
     private final Username username;
-    private final RandomSecret secretCode;
-    private final LocalDateTime creationTime;
+    private final SecretCode secretCode;
+    private final LocalDateTime creationTime = LocalDateTime.now();
 
     private PasswordResetCode(Username username) {
+        if (username == null) {
+            throw new IllegalArgumentException("username cann't be null");
+        }
         this.username = username;
-        secretCode = new RandomSecret();
-        this.creationTime = now();
+        secretCode = new SecretCode();
+    }
+
+    public PasswordResetCode(Username username, SecretCode secretCode) {
+        this.username = username;
+        this.secretCode = secretCode;
     }
 
     public static PasswordResetCode forUser(User user) {
@@ -23,7 +30,11 @@ public final class PasswordResetCode {
         return creationTime.plusMinutes(5).isBefore(now());
     }
 
-    public String value(){
+    public String value() {
         return secretCode.value();
+    }
+
+    public Username getUsername() {
+        return username;
     }
 }

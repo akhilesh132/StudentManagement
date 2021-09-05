@@ -1,10 +1,16 @@
 package com.akhilesh.studentManagement.security.domain.models;
 
-public class User {
+public final class User {
     private final Username username;
     private final Password password;
 
     public User(Username username, Password password) {
+        if (username == null) {
+            throw new IllegalArgumentException("username can't be null");
+        }
+        if (password == null) {
+            throw new IllegalArgumentException("password can't be null");
+        }
         this.username = username;
         this.password = password;
     }
@@ -13,4 +19,7 @@ public class User {
         return username;
     }
 
+    public Password getPassword() {
+        return password;
+    }
 }

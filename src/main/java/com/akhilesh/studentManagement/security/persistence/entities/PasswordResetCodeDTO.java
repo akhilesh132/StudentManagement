@@ -6,29 +6,38 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user_password_reset_codes")
-public class UserPasswordResetCodeDto extends AbstractAuditable<String> {
+public class PasswordResetCodeDTO extends AbstractAuditable<String> {
 
     @Id
-    @Column(name = "username")
+    @Column(name = "username", nullable = false)
+    @NotNull
+    @NotEmpty
     private String username;
 
-    @Column(name = "secret_code")
+    @Column(name = "secret_code", nullable = false)
+    @NotNull
+    @NotEmpty
     private String secretCode;
 
-    @Column(name = "generated_at")
+    @NotNull
+    @NotEmpty
+    @Column(name = "generated_at", nullable = false)
     private LocalDateTime generationDate;
 
-    private UserPasswordResetCodeDto() {
+    private PasswordResetCodeDTO() {
     }
 
-    public UserPasswordResetCodeDto(String username, String secretCode) {
+    public PasswordResetCodeDTO(String username, String secretCode) {
+        this.generationDate = LocalDateTime.now();
         this.username = username;
         this.secretCode = secretCode;
-        this.generationDate = LocalDateTime.now();
     }
 
     public String getUsername() {
