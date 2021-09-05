@@ -1,7 +1,7 @@
 package com.akhilesh.studentManagement.security.controllers.rest;
 
 
-import com.akhilesh.studentManagement.security.domain.models.Jwt;
+import com.akhilesh.studentManagement.security.domain.models.JsonWebToken;
 import com.akhilesh.studentManagement.security.controllers.models.request.AuthenticationRequest;
 import com.akhilesh.studentManagement.security.controllers.models.response.AuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class AuthenticationController {
         authenticationManager.authenticate(authToken);
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        Jwt jwt = Jwt.createFor(userDetails);
+        JsonWebToken jwt = JsonWebToken.createFor(userDetails);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new AuthenticationResponse(jwt.value()));
     }

@@ -4,7 +4,6 @@ import com.akhilesh.studentManagement.security.controllers.models.response.Gener
 import com.akhilesh.studentManagement.security.domain.exceptions.PasswordCriteriaException;
 import com.akhilesh.studentManagement.security.domain.exceptions.UserNotFoundException;
 import com.akhilesh.studentManagement.security.domain.models.*;
-import com.akhilesh.studentManagement.persistence.repositories.PasswordResetCodeJpaRepository;
 import com.akhilesh.studentManagement.security.controllers.models.request.PasswordResetRequest;
 import com.akhilesh.studentManagement.security.controllers.models.request.PasswordResetTokenRequest;
 import com.akhilesh.studentManagement.security.services.PasswordResetCodeRepository;
@@ -60,7 +59,7 @@ public class PasswordResetController {
     String resetPassword(@Validated @RequestBody PasswordResetRequest req)
             throws PasswordCriteriaException, UserNotFoundException {
 
-        Password newPassword = new Password(req.getNewPassword());
+        Password newPassword = new Password(req.getUpdatedPassword());
         Username username = new Username(req.getUsername());
 
         User user = userRepository.findBy(username);

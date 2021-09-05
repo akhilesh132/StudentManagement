@@ -1,6 +1,6 @@
 package com.akhilesh.studentManagement.security.request.filters;
 
-import com.akhilesh.studentManagement.security.domain.models.Jwt;
+import com.akhilesh.studentManagement.security.domain.models.JsonWebToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,7 +28,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer")) {
             String bearerToken = authorizationHeader.substring(7);
-            Jwt jwt = Jwt.fromValue(bearerToken);
+            JsonWebToken jwt = JsonWebToken.fromValue(bearerToken);
             String username = jwt.extractUsername();
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (jwt.isValidFor(userDetails)) {

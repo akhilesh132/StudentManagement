@@ -7,23 +7,22 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
-public class Jwt {
+public class JsonWebToken {
 
     private static final String SECRET = "secret";
     private final String value;
 
-    private Jwt(String value) {
+    private JsonWebToken(String value) {
         this.value = value;
     }
 
-    public static Jwt fromValue(String value) {
-        return new Jwt(value);
+    public static JsonWebToken fromValue(String value) {
+        return new JsonWebToken(value);
     }
 
-    public static Jwt createFor(UserDetails userDetails) {
+    public static JsonWebToken createFor(UserDetails userDetails) {
         String token = Jwts.builder()
                 .setClaims(new HashMap<>())
                 .setSubject(userDetails.getUsername())

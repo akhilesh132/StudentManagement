@@ -1,4 +1,4 @@
-package com.akhilesh.studentManagement.ports.controllers.advices;
+package com.akhilesh.studentManagement.security.controllers.advices;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
