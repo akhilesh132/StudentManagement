@@ -1,14 +1,13 @@
 package com.akhilesh.studentManagement.domain;
 
-import com.akhilesh.studentManagement.security.validators.PasswordCriteriaValidator;
+import com.akhilesh.studentManagement.security.domain.models.Password;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.security.core.parameters.P;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PasswordPolicyValidatorTest {
-
-    PasswordCriteriaValidator validator = new PasswordCriteriaValidator();
+class PasswordTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
@@ -20,9 +19,9 @@ class PasswordPolicyValidatorTest {
             "8765432jj"
 
     })
-    void notAllowedPasswordTest(String password) {
-        boolean isAllowed = validator.validate(password);
-        assertFalse(isAllowed);
+    void notAllowedPasswordTest(String value) {
+        Password password = new Password(value);
+        assertFalse(password.isCriteriaMet());
     }
 
     @ParameterizedTest
@@ -32,9 +31,9 @@ class PasswordPolicyValidatorTest {
             "12345@6790d0dD",
             "8765432%jJ"
     })
-    void allowedPasswordTest(String password) {
-        boolean isAllowed = validator.validate(password);
-       assertTrue(isAllowed);
+    void allowedPasswordTest(String value) {
+        Password password = new Password(value);
+        assertTrue(password.isCriteriaMet());
     }
 
 }

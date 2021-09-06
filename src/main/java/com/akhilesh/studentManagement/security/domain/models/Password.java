@@ -1,7 +1,6 @@
 package com.akhilesh.studentManagement.security.domain.models;
 
-import com.akhilesh.studentManagement.security.domain.exceptions.PasswordCriteriaException;
-import com.akhilesh.studentManagement.security.validators.PasswordCriteriaValidator;
+import org.passay.*;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -13,18 +12,18 @@ public final class Password {
     @NotEmpty
     private final String value;
 
-    public Password(String password) throws PasswordCriteriaException {
+    public Password(String password) {
         if (password == null || password.isBlank() || password.isEmpty())
             throw new IllegalArgumentException("password can't be empty or null");
-
-        boolean passwordCriteriaNotMet = !criteriaValidator.validate(password);
-        if (passwordCriteriaNotMet) throw new PasswordCriteriaException();
-
         this.value = password;
     }
 
     public String value() {
         return value;
+    }
+
+    public boolean isCriteriaMet() {
+        return criteriaValidator.validate(this.value);
     }
 
     @Override
@@ -33,7 +32,6 @@ public final class Password {
         if (o == null || getClass() != o.getClass()) return false;
 
         Password password = (Password) o;
-
         return value.equals(password.value);
     }
 
@@ -47,5 +45,26 @@ public final class Password {
         return "Password{" +
                 "value='" + "xxxx" + '\'' +
                 '}';
+    }
+
+    private static class PasswordCriteriaValidator {
+        private final char[] illegalCharacters = new char[]{'#'};
+
+        public boolean validate(String password) {
+            if (password == null || password.isEmpty()) return false;
+
+            PasswordData passwordData = new PasswordData(password);
+            PasswordValidator passwordValidator = new PasswordValidator(
+                    new LengthRule(8, 16),
+                    new IllegalCharacterRule(illegalCharacters),
+                    new CharacterRule(EnglishCharacterData.UpperCase, 1),
+                    new CharacterRule(EnglishCharacterData.LowerCase, 1),
+                    new CharacterRule(EnglishCharacterData.Digit, 1),
+                    new CharacterRule(EnglishCharacterData.Special, 1)
+            );
+            RuleResult result = passwordValidator.validate(passwordData);
+            return result.isValid();
+        }
+
     }
 }

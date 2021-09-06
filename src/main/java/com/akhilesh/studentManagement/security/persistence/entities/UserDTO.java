@@ -10,22 +10,22 @@ import javax.persistence.*;
 public class UserDTO extends AbstractAuditable<String> {
 
     @Id
-    @GeneratedValue
-    @Column(name = "userId")
-    private String userId;
-    @Column(name = "password")
+    @Column(name = "username", nullable = false)
+    private String username;
+
+    @Column(name = "password", nullable = false)
     private String password;
 
     private UserDTO() {
     }
 
-    public UserDTO(User user) {
-
-
+    public UserDTO(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
-    public String getUserId() {
-        return this.userId;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {

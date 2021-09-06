@@ -8,9 +8,11 @@ import com.akhilesh.studentManagement.security.persistence.entities.PasswordRese
 import com.akhilesh.studentManagement.security.persistence.repositories.jpa.PasswordResetCodeJpaRepository;
 import com.akhilesh.studentManagement.security.services.PasswordResetCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@Component
 public final class PasswordResetCodeRepository implements PasswordResetCodeService {
 
     private final PasswordResetCodeJpaRepository jpaRepository;

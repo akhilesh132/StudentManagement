@@ -1,7 +1,6 @@
 package com.akhilesh.studentManagement.ports.controllers.restapis;
 
 import com.akhilesh.studentManagement.security.persistence.repositories.jpa.UserJpaRepository;
-import com.akhilesh.studentManagement.security.domain.exceptions.PasswordCriteriaException;
 import com.akhilesh.studentManagement.security.domain.exceptions.UserAlreadyExistsException;
 import com.akhilesh.studentManagement.security.domain.models.Password;
 import com.akhilesh.studentManagement.security.controllers.models.request.UserRegistrationRequest;
@@ -34,7 +33,7 @@ public class UserController {
 
     @PostMapping("/users")
     ResponseEntity<?> createUser(@Validated @RequestBody UserRegistrationRequest req)
-            throws PasswordCriteriaException, UserAlreadyExistsException {
+           throws UserAlreadyExistsException {
 
         Password password = new Password(req.getPassword());
 
@@ -47,12 +46,12 @@ public class UserController {
                 .body(responseBody);
     }
 
-    @ExceptionHandler
-    public ResponseEntity<?> handlePasswordCriteriaException(PasswordCriteriaException pce) {
-        GenericResponse responseBody = new GenericResponse(PASSWORD_CRITERIA_NOT_MET);
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
-                .body(responseBody);
-    }
+//    @ExceptionHandler
+//    public ResponseEntity<?> handlePasswordCriteriaException(PasswordCriteriaException pce) {
+//        GenericResponse responseBody = new GenericResponse(PASSWORD_CRITERIA_NOT_MET);
+//        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+//                .body(responseBody);
+//    }
 
     @ExceptionHandler
     public ResponseEntity<?> handleUserAlreadyExistsException(UserAlreadyExistsException uae) {
