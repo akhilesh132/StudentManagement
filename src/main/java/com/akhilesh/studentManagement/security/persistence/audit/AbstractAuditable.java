@@ -5,7 +5,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.userdetails.User;
 
+import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
@@ -14,15 +16,19 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractAuditable<U> {
 
+    @Column(name = "created_by")
     @CreatedBy
-    protected U createdBy;
+    protected String createdBy;
 
+    @Column(name = "last_modified_by")
     @LastModifiedBy
-    protected U lastModifiedBy;
+    protected String lastModifiedBy;
 
+    @Column(name = "created_date")
     @CreatedDate
     protected LocalDateTime createdDate;
 
+    @Column(name = "last_modified_date")
     @LastModifiedDate
     protected LocalDateTime lastModifiedDate;
 
