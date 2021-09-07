@@ -1,18 +1,14 @@
 package com.akhilesh.studentManagement.security.controllers.rest;
 
-import com.akhilesh.studentManagement.security.controllers.models.response.GenericResponse;
 import com.akhilesh.studentManagement.security.domain.models.*;
 import com.akhilesh.studentManagement.security.controllers.models.request.PasswordResetRequest;
 import com.akhilesh.studentManagement.security.controllers.models.request.PasswordResetTokenRequest;
 import com.akhilesh.studentManagement.security.services.PasswordResetCodeService;
 import com.akhilesh.studentManagement.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,51 +32,63 @@ public class PasswordResetController {
     }
 
     @PostMapping("/user/password/reset/generate-token")
-    String generatePasswordResetToken(@Validated @RequestBody PasswordResetTokenRequest req) {
+    String generatePasswordResetToken(@Validated @RequestBody PasswordResetTokenRequest request) {
+
+        Username username = new Username(request.getUsername());
+        Optional<User> byUsername = userService.findBy(username);
+        if (byUsername.isEmpty()) {
+            return "user not found";
+        }
+        User user = byUsername.get();
 
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setFrom("rajakhil132@gmail.com");
         mail.setSubject("Password Reset Code");
-        mail.setTo(req.getUsername());
+        mail.setTo(request.getUsername());
 
         String secretCode = new SecretCode().value();
         mail.setText("code: " + secretCode);
         //mailSender.send(mail);
-        Username username = new Username(req.getUsername());
-        Optional<User> user = userService.findBy(username);
-        PasswordResetCode passwordResetCode = PasswordResetCode.forUser(user.get());
+
+        PasswordResetCode passwordResetCode = PasswordResetCode.forUser(user);
         resetCodeRepository.save(passwordResetCode);
 
         return "password reset code has been sent over mail";
     }
 
     @PostMapping("/user/password/reset/password-reset")
-    String resetPassword(@Validated @RequestBody PasswordResetRequest req) {
+    String resetPassword(@Validated @RequestBody PasswordResetRequest request) {
 
-        Password newPassword = new Password(req.getUpdatedPassword());
-        Username username = new Username(req.getUsername());
+        Password newPassword = new Password(request.getPassword());
+        if (newPassword.violatesPasswordCriteria()) {
+            return "password doesn't meet password criteria";
+        }
 
-        Optional<User> user = userService.findBy(username);
-        Optional<PasswordResetCode> byUsername = resetCodeRepository.findForUser(user.get());
+        Username username = new Username(request.getUsername());
+        Optional<User> byUsername = userService.findBy(username);
         if (byUsername.isEmpty()) {
+            return "user not found";
+        }
+        User user = byUsername.get();
+
+        Optional<PasswordResetCode> byUser = resetCodeRepository.findForUser(user);
+        if (byUser.isEmpty()) {
             return "no password reset token exists";
         }
-        PasswordResetCode passwordResetCode = byUsername.get();
+        PasswordResetCode passwordResetCode = byUser.get();
 
         boolean resetCodeIsExpired = passwordResetCode.isExpired();
         if (resetCodeIsExpired) {
             return "token expired, please generate password reset request again";
         }
 
-        String providedSecretCode = req.getSecretToken();
+        String providedSecretCode = request.getSecretToken();
         boolean isTokenValid = passwordResetCode.value().equals(providedSecretCode);
 
-//        if (isTokenValid) {
-//            User user = new User(userId, newPassword);
-//            UserDTO updatedUser = new UserDTO(user);
-//            userJpaRepository.save(updatedUser);
-//            return "password reset successful";
-//        }
+        if (isTokenValid) {
+            User updatedUser = user.withPassword(newPassword);
+            userService.save(updatedUser);
+        }
         return null;
     }
 

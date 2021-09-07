@@ -38,7 +38,8 @@ public final class PasswordResetCodeRepository implements PasswordResetCodeServi
             return Optional.empty();
         }
         PasswordResetCodeDTO resetCodeDTO = byId.get();
-        SecretCode secretCode = SecretCode.withValue(resetCodeDTO.getSecretCode());
+        String secret = resetCodeDTO.getSecretCode();
+        SecretCode secretCode = SecretCode.withValue(secret);
         return Optional.of(new PasswordResetCode(username, secretCode));
     }
 }

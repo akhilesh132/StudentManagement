@@ -3,7 +3,6 @@ package com.akhilesh.studentManagement.domain;
 import com.akhilesh.studentManagement.security.domain.models.Password;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.security.core.parameters.P;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,7 +20,7 @@ class PasswordTest {
     })
     void notAllowedPasswordTest(String value) {
         Password password = new Password(value);
-        assertFalse(password.isCriteriaMet());
+        assertFalse(password.meetsPasswordCriteria());
     }
 
     @ParameterizedTest
@@ -33,7 +32,7 @@ class PasswordTest {
     })
     void allowedPasswordTest(String value) {
         Password password = new Password(value);
-        assertTrue(password.isCriteriaMet());
+        assertTrue(password.meetsPasswordCriteria());
     }
 
 }

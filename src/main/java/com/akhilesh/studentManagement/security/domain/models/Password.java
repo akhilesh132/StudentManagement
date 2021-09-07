@@ -22,8 +22,12 @@ public final class Password {
         return value;
     }
 
-    public boolean isCriteriaMet() {
+    public boolean meetsPasswordCriteria() {
         return criteriaValidator.validate(this.value);
+    }
+
+    public boolean violatesPasswordCriteria() {
+        return !meetsPasswordCriteria();
     }
 
     @Override

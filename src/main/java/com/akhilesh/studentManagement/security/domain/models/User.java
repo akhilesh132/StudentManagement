@@ -22,4 +22,8 @@ public final class User {
     public Password getPassword() {
         return password;
     }
+
+    public User withPassword(Password password) {
+        return new User(this.username, password);
+    }
 }

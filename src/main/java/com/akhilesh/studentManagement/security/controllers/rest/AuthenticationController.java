@@ -33,16 +33,16 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody @Validated AuthenticationRequest req) {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody @Validated AuthenticationRequest request) {
 
-        String username = req.getUsername();
-        String password = req.getPassword();
+        String username = request.getUsername();
+        String password = request.getPassword();
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
 
         authenticationManager.authenticate(authToken);
-
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         JsonWebToken jwt = JsonWebToken.createFor(userDetails);
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new AuthenticationResponse(jwt.value()));
     }
