@@ -1,7 +1,7 @@
 package com.akhilesh.studentManagement.security.persistence.repositories;
 
 import com.akhilesh.studentManagement.security.domain.models.PasswordResetCode;
-import com.akhilesh.studentManagement.security.domain.models.SecretCode;
+import com.akhilesh.studentManagement.security.domain.models.Secret;
 import com.akhilesh.studentManagement.security.domain.models.User;
 import com.akhilesh.studentManagement.security.domain.models.Username;
 import com.akhilesh.studentManagement.security.persistence.entities.PasswordResetCodeDTO;
@@ -25,9 +25,10 @@ public final class PasswordResetCodeRepository implements PasswordResetCodeServi
     @Override
     public void save(PasswordResetCode resetCode) {
         String username = resetCode.getUsername().value();
-        String secretCode = resetCode.value();
-        PasswordResetCodeDTO resetCodeDTO = new PasswordResetCodeDTO(username, secretCode);
-        jpaRepository.save(resetCodeDTO);
+        String rawSecret = resetCode.value();
+        String encodedSecret = Secret.withValue(rawSecret).encoded().value();
+        PasswordResetCodeDTO dto = new PasswordResetCodeDTO(username, encodedSecret);
+        jpaRepository.save(dto);
     }
 
     @Override
@@ -37,9 +38,10 @@ public final class PasswordResetCodeRepository implements PasswordResetCodeServi
         if (byId.isEmpty()) {
             return Optional.empty();
         }
-        PasswordResetCodeDTO resetCodeDTO = byId.get();
-        String secret = resetCodeDTO.getSecretCode();
-        SecretCode secretCode = SecretCode.withValue(secret);
-        return Optional.of(new PasswordResetCode(username, secretCode));
+        PasswordResetCodeDTO dto = byId.get();
+        String encodedSecret = dto.getSecretCode();
+        Secret secret = Secret.withValue(encodedSecret);
+        PasswordResetCode resetCode = new PasswordResetCode(username, secret);
+        return Optional.of(resetCode);
     }
 }

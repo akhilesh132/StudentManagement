@@ -5,33 +5,37 @@ import java.time.LocalDateTime;
 import static java.time.LocalDateTime.now;
 
 public final class PasswordResetCode {
+
     private final Username username;
-    private final SecretCode secretCode;
+    private final Secret secret;
     private final LocalDateTime creationTime = LocalDateTime.now();
 
     private PasswordResetCode(Username username) {
         if (username == null) {
-            throw new IllegalArgumentException("username cann't be null");
+            throw new IllegalArgumentException("username can't be null");
         }
         this.username = username;
-        secretCode = new SecretCode();
+        this.secret = new Secret();
     }
 
-    public PasswordResetCode(Username username, SecretCode secretCode) {
+    public PasswordResetCode(Username username, Secret secret) {
         this.username = username;
-        this.secretCode = secretCode;
+        this.secret = secret;
     }
 
     public static PasswordResetCode forUser(User user) {
         return new PasswordResetCode(user.getUsername());
     }
 
-    public boolean isExpired() {
-        return creationTime.plusMinutes(5).isBefore(now());
+    public boolean matches(Secret secret){
+        return this.secret.matches(secret);
+    }
+    public String value() {
+        return secret.value();
     }
 
-    public String value() {
-        return secretCode.value();
+    public boolean isExpired() {
+        return creationTime.plusMinutes(5).isBefore(now());
     }
 
     public Username getUsername() {

@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user_password_reset_codes")
-public class PasswordResetCodeDTO extends AbstractAuditable<String> {
+public class PasswordResetCodeDTO {
 
     @Id
     @Column(name = "username", nullable = false)

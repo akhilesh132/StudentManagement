@@ -13,7 +13,11 @@ import java.util.Optional;
 @Component
 public class UserRepository implements UserService {
 
-    private UserJpaRepository jpaRepository;
+    private final UserJpaRepository jpaRepository;
+
+    public UserRepository(UserJpaRepository jpaRepository) {
+        this.jpaRepository = jpaRepository;
+    }
 
     @Override
     public void save(User user) {

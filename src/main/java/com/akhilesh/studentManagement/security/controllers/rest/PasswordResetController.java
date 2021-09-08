@@ -41,17 +41,16 @@ public class PasswordResetController {
         }
         User user = byUsername.get();
 
+        PasswordResetCode passwordResetCode = PasswordResetCode.forUser(user);
+        String secretCode = passwordResetCode.value();
+        resetCodeRepository.save(passwordResetCode);
+
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setFrom("rajakhil132@gmail.com");
         mail.setSubject("Password Reset Code");
         mail.setTo(request.getUsername());
-
-        String secretCode = new SecretCode().value();
         mail.setText("code: " + secretCode);
         //mailSender.send(mail);
-
-        PasswordResetCode passwordResetCode = PasswordResetCode.forUser(user);
-        resetCodeRepository.save(passwordResetCode);
 
         return "password reset code has been sent over mail";
     }
@@ -82,8 +81,9 @@ public class PasswordResetController {
             return "token expired, please generate password reset request again";
         }
 
-        String providedSecretCode = request.getSecretToken();
-        boolean isTokenValid = passwordResetCode.value().equals(providedSecretCode);
+        String secretToken = request.getSecretToken();
+        Secret secret = Secret.withValue(secretToken);
+        boolean isTokenValid = passwordResetCode.matches(secret);
 
         if (isTokenValid) {
             User updatedUser = user.withPassword(newPassword);
