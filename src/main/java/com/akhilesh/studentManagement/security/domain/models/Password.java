@@ -1,5 +1,6 @@
 package com.akhilesh.studentManagement.security.domain.models;
 
+import com.akhilesh.studentManagement.security.domain.exceptions.PasswordCriteriaException;
 import org.passay.*;
 
 import javax.validation.constraints.NotEmpty;
@@ -15,19 +16,14 @@ public final class Password {
     public Password(String password) {
         if (password == null || password.isBlank() || password.isEmpty())
             throw new IllegalArgumentException("password can't be empty or null");
+        if (criteriaValidator.isCriteriaViolated(password)) {
+            throw new PasswordCriteriaException();
+        }
         this.value = password;
     }
 
     public String value() {
         return value;
-    }
-
-    public boolean meetsPasswordCriteria() {
-        return criteriaValidator.validate(this.value);
-    }
-
-    public boolean violatesPasswordCriteria() {
-        return !meetsPasswordCriteria();
     }
 
     @Override
@@ -54,7 +50,7 @@ public final class Password {
     private static class PasswordCriteriaValidator {
         private final char[] illegalCharacters = new char[]{'#'};
 
-        public boolean validate(String password) {
+        public boolean isCriteriaViolated(String password) {
             if (password == null || password.isEmpty()) return false;
 
             PasswordData passwordData = new PasswordData(password);
@@ -67,7 +63,7 @@ public final class Password {
                     new CharacterRule(EnglishCharacterData.Special, 1)
             );
             RuleResult result = passwordValidator.validate(passwordData);
-            return result.isValid();
+            return !result.isValid();
         }
 
     }

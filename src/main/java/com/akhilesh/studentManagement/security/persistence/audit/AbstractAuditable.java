@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class AbstractAuditable<String> {
+public abstract class AbstractAuditable{
 
     @Column(name = "created_by")
     @CreatedBy

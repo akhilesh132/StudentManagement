@@ -2,13 +2,14 @@ package com.akhilesh.studentManagement.security.domain.models;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public final class Secret {
 
-    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    private static final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @NotNull
     @NotEmpty
@@ -30,8 +31,12 @@ public final class Secret {
         return new Secret(encoder.encode(this.secret));
     }
 
-    public boolean matches(Secret rawCode) {
-        return encoder.matches(rawCode.value(), this.secret);
+    public boolean matches(Secret provided) {
+        return encoder.matches(provided.value(), this.secret);
+    }
+
+    public boolean matches(String provided) {
+        return encoder.matches(provided, this.secret);
     }
 
     public String value() {

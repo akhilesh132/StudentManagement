@@ -31,6 +31,10 @@ public final class PasswordResetCode {
         return this.secret.matches(provided);
     }
 
+    public boolean matches(String provided) {
+        return this.secret.matches(provided);
+    }
+
     public String value() {
         return secret.value();
     }

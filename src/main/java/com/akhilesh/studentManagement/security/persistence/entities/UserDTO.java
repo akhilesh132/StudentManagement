@@ -2,12 +2,16 @@ package com.akhilesh.studentManagement.security.persistence.entities;
 
 import com.akhilesh.studentManagement.security.domain.models.User;
 import com.akhilesh.studentManagement.security.persistence.audit.AbstractAuditable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "user_details")
-public class UserDTO extends AbstractAuditable<String> {
+public class UserDTO extends AbstractAuditable {
+
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Id
     @Column(name = "username", nullable = false)
@@ -21,7 +25,7 @@ public class UserDTO extends AbstractAuditable<String> {
 
     public UserDTO(String username, String password) {
         this.username = username;
-        this.password = password;
+        this.password = passwordEncoder.encode(password);
     }
 
     public String getUsername() {
