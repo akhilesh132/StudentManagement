@@ -11,23 +11,23 @@ public class PasswordResetRequest {
     private final String username;
     @NotNull
     @NotBlank
-    private final String secretToken;
+    private final String token;
     @NotNull
     @NotBlank
     private final String password;
 
-    public PasswordResetRequest(String username, String secretToken, String password) {
+    public PasswordResetRequest(String username, String token, String password) {
         if (isEmpty(username)) {
             throw new IllegalArgumentException("username can't be null or empty");
         }
-        if (isEmpty(secretToken)) {
+        if (isEmpty(token)) {
             throw new IllegalArgumentException("secret token must be provided");
         }
         if (isEmpty(password)) {
             throw new IllegalArgumentException("new password can't be null or empty");
         }
         this.username = username;
-        this.secretToken = secretToken;
+        this.token = token;
         this.password = password;
     }
 
@@ -35,8 +35,8 @@ public class PasswordResetRequest {
         return username;
     }
 
-    public String getSecretToken() {
-        return secretToken;
+    public String getToken() {
+        return token;
     }
 
     public String getPassword() {

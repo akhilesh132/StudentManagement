@@ -52,7 +52,7 @@ public class PasswordResetController {
         mail.setText("code: " + secretCode);
         //mailSender.send(mail);
 
-        return "password reset code has been sent over mail";
+        return "password reset code has been sent over mail: "+ secretCode;
     }
 
     @PostMapping("/user/password/reset/password-reset")
@@ -81,8 +81,8 @@ public class PasswordResetController {
             return "token expired, please generate password reset request again";
         }
 
-        String secretToken = request.getSecretToken();
-        Secret secret = Secret.withValue(secretToken);
+        String token = request.getToken();
+        Secret secret = Secret.withValue(token);
         boolean isTokenValid = passwordResetCode.matches(secret);
 
         if (isTokenValid) {

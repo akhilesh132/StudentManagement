@@ -27,9 +27,10 @@ public final class PasswordResetCode {
         return new PasswordResetCode(user.getUsername());
     }
 
-    public boolean matches(Secret secret){
-        return this.secret.matches(secret);
+    public boolean matches(Secret provided) {
+        return this.secret.matches(provided);
     }
+
     public String value() {
         return secret.value();
     }
