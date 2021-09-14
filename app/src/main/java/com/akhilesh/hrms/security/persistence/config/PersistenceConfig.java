@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "com.akhilesh.studentManagement.security.persistence.repositories.jpa"
+        basePackages = "com.akhilesh.hrms.security.persistence.repositories.jpa"
 )
 public class PersistenceConfig {
 }
