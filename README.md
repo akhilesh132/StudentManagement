@@ -1,2 +1,2 @@
-# StudentManagement
-Student management backend in spring boot
+# HRMS
+HRMS backend in spring boot
