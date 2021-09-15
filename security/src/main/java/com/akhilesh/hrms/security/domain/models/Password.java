@@ -1,16 +1,17 @@
 package com.akhilesh.hrms.security.domain.models;
 
 import com.akhilesh.hrms.security.domain.exceptions.PasswordCriteriaException;
-import org.passay.*;
-
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import org.passay.CharacterRule;
+import org.passay.EnglishCharacterData;
+import org.passay.IllegalCharacterRule;
+import org.passay.LengthRule;
+import org.passay.PasswordData;
+import org.passay.PasswordValidator;
+import org.passay.RuleResult;
 
 public final class Password {
-
     private static final PasswordCriteriaValidator criteriaValidator = new PasswordCriteriaValidator();
-    @NotNull
-    @NotEmpty
+
     private final String value;
 
     public Password(String password) {

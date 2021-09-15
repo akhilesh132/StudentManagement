@@ -4,15 +4,10 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
 public final class Secret {
 
     private static final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    @NotNull
-    @NotEmpty
     private final String secret;
 
     public Secret() {

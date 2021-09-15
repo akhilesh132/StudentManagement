@@ -1,5 +1,5 @@
 plugins {
-   id 'java'
+    id 'java'
 }
 
 group = 'com.akhilesh.hrms'
@@ -13,7 +13,10 @@ repositories {
 }
 
 dependencies {
-
+    implementation 'org.springframework.security:spring-security-core:5.5.2'
+    implementation 'io.jsonwebtoken;jjwt:0.9.1'
+    implementation 'org.passay:passay:1.6.1'
+    implementation group: 'org.apache.commons:commons-lang3:3.12.0'
 }
 
 test {

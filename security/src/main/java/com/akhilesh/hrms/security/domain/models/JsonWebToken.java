@@ -3,7 +3,6 @@ package com.akhilesh.hrms.security.domain.models;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -22,10 +21,10 @@ public class JsonWebToken {
         return new JsonWebToken(value);
     }
 
-    public static JsonWebToken createFor(UserDetails userDetails) {
+    public static JsonWebToken createFor(User user) {
         String token = Jwts.builder()
                 .setClaims(new HashMap<>())
-                .setSubject(userDetails.getUsername())
+                .setSubject(user.getUsername().value())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .signWith(SignatureAlgorithm.HS256, SECRET)
@@ -33,10 +32,10 @@ public class JsonWebToken {
         return fromValue(token);
     }
 
-    public boolean isValidFor(UserDetails userDetails) {
-        if (userDetails == null) return false;
+    public boolean isValidFor(User user) {
+        if (user == null) return false;
         String username = extractUsername();
-        return username.equals(userDetails.getUsername()) && isNotExpired();
+        return username.equals(user.getUsername().value()) && isNotExpired();
     }
 
     public Claims extractAllClaims() {
@@ -50,7 +49,7 @@ public class JsonWebToken {
         return value;
     }
 
-    public <T> T extractClaim(Function<Claims, T> claimResolver) {
+    private <T> T extractClaim(Function<Claims, T> claimResolver) {
         final Claims claims = extractAllClaims();
         return claimResolver.apply(claims);
     }
