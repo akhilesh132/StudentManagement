@@ -5,7 +5,7 @@ import com.akhilesh.hrms.security.domain.models.User;
 import com.akhilesh.hrms.security.domain.models.Username;
 import com.akhilesh.hrms.security.persistence.entities.UserDTO;
 import com.akhilesh.hrms.security.persistence.repositories.jpa.UserJpaRepository;
-import com.akhilesh.hrms.security.services.UserService;
+import com.akhilesh.hrms.security.domain.services.UserService;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

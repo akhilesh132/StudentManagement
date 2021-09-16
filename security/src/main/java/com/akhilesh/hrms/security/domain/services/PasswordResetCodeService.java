@@ -1,4 +1,4 @@
-package com.akhilesh.hrms.security.services;
+package com.akhilesh.hrms.security.domain.services;
 
 import com.akhilesh.hrms.security.domain.models.PasswordResetCode;
 import com.akhilesh.hrms.security.domain.models.User;
