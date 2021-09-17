@@ -1,6 +1,10 @@
 package com.akhilesh.hrms.security.request.filters;
 
+import com.akhilesh.hrms.security.domain.exceptions.UserNotFoundException;
 import com.akhilesh.hrms.security.domain.models.JsonWebToken;
+import com.akhilesh.hrms.security.domain.models.User;
+import com.akhilesh.hrms.security.domain.models.Username;
+import com.akhilesh.hrms.security.domain.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -21,11 +25,11 @@ import java.io.IOException;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    private final UserDetailsService userDetailsService;
+    private final UserService userService;
 
     @Autowired
-    public JwtRequestFilter(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
+    public JwtRequestFilter(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -37,15 +41,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer")) {
             String bearerToken = authorizationHeader.substring(7);
             JsonWebToken jwt = JsonWebToken.fromValue(bearerToken);
-            String username = jwt.extractUsername();
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            if (jwt.isValidFor(userDetails)) {
-                UsernamePasswordAuthenticationToken userPassAuthToken
-                        = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                WebAuthenticationDetails webAuthDetails = new WebAuthenticationDetailsSource().buildDetails(request);
-                userPassAuthToken.setDetails(webAuthDetails);
-                SecurityContext securityContext = SecurityContextHolder.getContext();
-                securityContext.setAuthentication(userPassAuthToken);
+            Username username = jwt.extractUsername();
+            User user = userService.findBy(username).orElseThrow(UserNotFoundException::new);
+            if (jwt.isValidFor(user)) {
+//                UsernamePasswordAuthenticationToken userPassAuthToken
+//                        = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//                WebAuthenticationDetails webAuthDetails = new WebAuthenticationDetailsSource().buildDetails(request);
+//                userPassAuthToken.setDetails(webAuthDetails);
+//                SecurityContext securityContext = SecurityContextHolder.getContext();
+//                securityContext.setAuthentication(userPassAuthToken);
             }
         }
         filterChain.doFilter(request, response);

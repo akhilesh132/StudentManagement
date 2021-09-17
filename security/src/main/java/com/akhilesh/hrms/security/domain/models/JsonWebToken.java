@@ -34,8 +34,8 @@ public class JsonWebToken {
 
     public boolean isValidFor(User user) {
         if (user == null) return false;
-        String username = extractUsername();
-        return username.equals(user.getUsername().value()) && isNotExpired();
+        Username username = extractUsername();
+        return username.equals(user.getUsername()) && isNotExpired();
     }
 
     public Claims extractAllClaims() {
@@ -49,13 +49,14 @@ public class JsonWebToken {
         return value;
     }
 
+    public Username extractUsername() {
+        String subject = extractClaim(Claims::getSubject);
+        return new Username(subject);
+    }
+
     private <T> T extractClaim(Function<Claims, T> claimResolver) {
         final Claims claims = extractAllClaims();
         return claimResolver.apply(claims);
-    }
-
-    public String extractUsername() {
-        return extractClaim(Claims::getSubject);
     }
 
     private Date extractExpiration() {
