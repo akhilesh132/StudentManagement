@@ -30,15 +30,15 @@ public class PasswordResetController {
 
     private final JavaMailSender mailSender;
     private final UserService userService;
-    private final PasswordResetCodeService resetCodeRepository;
+    private final PasswordResetCodeService codeService;
 
     @Autowired
     public PasswordResetController(JavaMailSender mailSender,
                                    UserService userService,
-                                   PasswordResetCodeService resetCodeRepository) {
+                                   PasswordResetCodeService codeService) {
         this.mailSender = mailSender;
         this.userService = userService;
-        this.resetCodeRepository = resetCodeRepository;
+        this.codeService = codeService;
     }
 
     @PostMapping("/user/password/reset/generate-token")
@@ -49,7 +49,7 @@ public class PasswordResetController {
 
         PasswordResetCode passwordResetCode = PasswordResetCode.forUser(user);
         String secretCode = passwordResetCode.value();
-        resetCodeRepository.save(passwordResetCode);
+        codeService.save(passwordResetCode);
 
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setFrom("rajakhil132@gmail.com");
@@ -68,7 +68,7 @@ public class PasswordResetController {
         Username username = new Username(request.getUsername());
         User user = userService.findBy(username)
                 .orElseThrow(UserNotFoundException::new);
-        PasswordResetCode passwordResetCode = resetCodeRepository.findForUser(user)
+        PasswordResetCode passwordResetCode = codeService.findForUser(user)
                 .orElseThrow(PasswordResetCodeNotFoundException::new);
 
         boolean resetCodeIsExpired = passwordResetCode.isExpired();
