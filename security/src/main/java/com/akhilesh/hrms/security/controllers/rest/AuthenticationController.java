@@ -1,10 +1,10 @@
 package com.akhilesh.hrms.security.controllers.rest;
 
 
-import com.akhilesh.hrms.security.domain.exceptions.UserNotFoundException;
-import com.akhilesh.hrms.security.domain.models.JsonWebToken;
 import com.akhilesh.hrms.security.controllers.models.request.AuthenticationRequest;
 import com.akhilesh.hrms.security.controllers.models.response.AuthenticationResponse;
+import com.akhilesh.hrms.security.domain.exceptions.UserNotFoundException;
+import com.akhilesh.hrms.security.domain.models.JsonWebToken;
 import com.akhilesh.hrms.security.domain.models.User;
 import com.akhilesh.hrms.security.domain.models.Username;
 import com.akhilesh.hrms.security.domain.services.UserService;
@@ -14,15 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Optional;
 
 @RestController
 public class AuthenticationController {

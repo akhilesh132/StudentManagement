@@ -1,4 +1,4 @@
-package com.akhilesh.hrms;
+package com.akhilesh.hrms.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

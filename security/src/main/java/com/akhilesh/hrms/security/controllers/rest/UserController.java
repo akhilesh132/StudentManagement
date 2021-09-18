@@ -1,10 +1,10 @@
-package com.akhilesh.hrms.ports.controllers.restapis;
+package com.akhilesh.hrms.security.controllers.rest;
 
+import com.akhilesh.hrms.security.controllers.models.request.UserRegistrationRequest;
+import com.akhilesh.hrms.security.controllers.models.response.GenericResponse;
 import com.akhilesh.hrms.security.persistence.repositories.jpa.UserJpaRepository;
 import com.akhilesh.hrms.security.domain.exceptions.UserAlreadyExistsException;
 import com.akhilesh.hrms.security.domain.models.Password;
-import com.akhilesh.hrms.security.controllers.models.request.UserRegistrationRequest;
-import com.akhilesh.hrms.security.controllers.models.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

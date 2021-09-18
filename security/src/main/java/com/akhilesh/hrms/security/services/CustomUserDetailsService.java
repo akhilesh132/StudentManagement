@@ -1,7 +1,7 @@
 package com.akhilesh.hrms.security.services;
 
-import com.akhilesh.hrms.security.persistence.entities.UserDTO;
 import com.akhilesh.hrms.security.persistence.repositories.jpa.UserJpaRepository;
+import com.akhilesh.hrms.security.persistence.entities.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
