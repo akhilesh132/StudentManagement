@@ -5,6 +5,7 @@ import com.akhilesh.hrms.security.domain.models.Secret;
 import com.akhilesh.hrms.security.domain.models.User;
 import com.akhilesh.hrms.security.domain.models.Username;
 import com.akhilesh.hrms.security.domain.services.PasswordResetCodeService;
+import com.akhilesh.hrms.security.persistence.repositories.PasswordResetCodeRepository;
 import com.akhilesh.hrms.security.persistence.repositories.jpa.PasswordResetCodeJpaRepository;
 import com.akhilesh.hrms.security.persistence.entities.PasswordResetCodeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,33 +16,20 @@ import java.util.Optional;
 @Component
 public final class PasswordResetCodeServiceImpl implements PasswordResetCodeService {
 
-    private final PasswordResetCodeJpaRepository jpaRepository;
+    private final PasswordResetCodeRepository repository;
 
     @Autowired
-    public PasswordResetCodeServiceImpl(PasswordResetCodeJpaRepository jpaRepository) {
-        this.jpaRepository = jpaRepository;
+    public PasswordResetCodeServiceImpl(PasswordResetCodeRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public void save(PasswordResetCode resetCode) {
-        String username = resetCode.getUsername().value();
-        String rawSecret = resetCode.value();
-        String encodedSecret = Secret.withValue(rawSecret).encoded().value();
-        PasswordResetCodeDTO dto = new PasswordResetCodeDTO(username, encodedSecret);
-        jpaRepository.save(dto);
+        repository.save(resetCode);
     }
 
     @Override
     public Optional<PasswordResetCode> findForUser(User user) {
-        Username username = user.getUsername();
-        Optional<PasswordResetCodeDTO> byId = jpaRepository.findById(username.value());
-        if (byId.isEmpty()) {
-            return Optional.empty();
-        }
-        PasswordResetCodeDTO dto = byId.get();
-        String encodedSecret = dto.getSecretCode();
-        Secret secret = Secret.withValue(encodedSecret);
-        PasswordResetCode resetCode = new PasswordResetCode(username, secret);
-        return Optional.of(resetCode);
+        return repository.findForUser(user);
     }
 }
