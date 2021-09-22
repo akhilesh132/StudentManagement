@@ -1,10 +1,10 @@
-package com.akhilesh.hrms.security.controllers.rest;
+package com.akhilesh.hrms.security.controllers.api;
 
 
 import com.akhilesh.hrms.security.controllers.models.request.AuthenticationRequest;
 import com.akhilesh.hrms.security.controllers.models.response.AuthenticationResponse;
 import com.akhilesh.hrms.security.domain.exceptions.UserNotFoundException;
-import com.akhilesh.hrms.security.domain.models.JsonWebToken;
+import com.akhilesh.hrms.security.domain.models.Jwt;
 import com.akhilesh.hrms.security.domain.models.User;
 import com.akhilesh.hrms.security.domain.models.Username;
 import com.akhilesh.hrms.security.domain.services.UserService;
@@ -44,7 +44,7 @@ public class AuthenticationController {
         authenticationManager.authenticate(authToken);
         User user = userService.findBy(username).orElseThrow(UserNotFoundException::new);
 
-        JsonWebToken jwt = JsonWebToken.createFor(user);
+        Jwt jwt = Jwt.createFor(user);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new AuthenticationResponse(jwt.value()));

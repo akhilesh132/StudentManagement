@@ -1,4 +1,4 @@
-package com.akhilesh.hrms.security.persistence.repositories;
+package com.akhilesh.hrms.security.services;
 
 import com.akhilesh.hrms.security.domain.models.PasswordResetCode;
 import com.akhilesh.hrms.security.domain.models.Secret;
@@ -13,12 +13,12 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public final class PasswordResetCodeRepository implements PasswordResetCodeService {
+public final class PasswordResetCodeServiceImpl implements PasswordResetCodeService {
 
     private final PasswordResetCodeJpaRepository jpaRepository;
 
     @Autowired
-    public PasswordResetCodeRepository(PasswordResetCodeJpaRepository jpaRepository) {
+    public PasswordResetCodeServiceImpl(PasswordResetCodeJpaRepository jpaRepository) {
         this.jpaRepository = jpaRepository;
     }
 

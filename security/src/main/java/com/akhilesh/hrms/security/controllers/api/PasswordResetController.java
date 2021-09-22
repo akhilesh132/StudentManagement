@@ -1,4 +1,4 @@
-package com.akhilesh.hrms.security.controllers.rest;
+package com.akhilesh.hrms.security.controllers.api;
 
 import com.akhilesh.hrms.security.controllers.models.request.PasswordResetRequest;
 import com.akhilesh.hrms.security.controllers.models.request.PasswordResetTokenRequest;

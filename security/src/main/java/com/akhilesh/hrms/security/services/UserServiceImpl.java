@@ -1,4 +1,4 @@
-package com.akhilesh.hrms.security.persistence.repositories;
+package com.akhilesh.hrms.security.services;
 
 import com.akhilesh.hrms.security.domain.models.Password;
 import com.akhilesh.hrms.security.domain.models.User;
@@ -6,16 +6,18 @@ import com.akhilesh.hrms.security.domain.models.Username;
 import com.akhilesh.hrms.security.persistence.entities.UserDTO;
 import com.akhilesh.hrms.security.persistence.repositories.jpa.UserJpaRepository;
 import com.akhilesh.hrms.security.domain.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
-public class UserRepository implements UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserJpaRepository jpaRepository;
 
-    public UserRepository(UserJpaRepository jpaRepository) {
+    @Autowired
+    public UserServiceImpl(UserJpaRepository jpaRepository) {
         this.jpaRepository = jpaRepository;
     }
 

@@ -8,20 +8,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.function.Function;
 
-public class JsonWebToken {
+public class Jwt {
 
     private static final String SECRET = "secret";
     private final String value;
 
-    private JsonWebToken(String value) {
+    private Jwt(String value) {
         this.value = value;
     }
 
-    public static JsonWebToken fromValue(String value) {
-        return new JsonWebToken(value);
+    public static Jwt fromValue(String value) {
+        return new Jwt(value);
     }
 
-    public static JsonWebToken createFor(User user) {
+    public static Jwt createFor(User user) {
         String token = Jwts.builder()
                 .setClaims(new HashMap<>())
                 .setSubject(user.getUsername().value())
