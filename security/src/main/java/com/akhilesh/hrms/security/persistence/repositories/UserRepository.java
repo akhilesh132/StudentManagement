@@ -6,11 +6,11 @@ import com.akhilesh.hrms.security.domain.models.Username;
 import com.akhilesh.hrms.security.persistence.entities.UserDTO;
 import com.akhilesh.hrms.security.persistence.repositories.jpa.UserJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Service
+@Repository
 public class UserRepository {
 
     private final UserJpaRepository jpaRepository;

@@ -7,11 +7,12 @@ import com.akhilesh.hrms.security.domain.models.Username;
 import com.akhilesh.hrms.security.persistence.entities.PasswordResetCodeDTO;
 import com.akhilesh.hrms.security.persistence.repositories.jpa.PasswordResetCodeJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service
+@Repository
 public class PasswordResetCodeRepository {
 
     private final PasswordResetCodeJpaRepository jpaRepository;
