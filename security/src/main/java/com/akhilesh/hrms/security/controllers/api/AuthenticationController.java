@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 public class AuthenticationController {
 
@@ -42,7 +44,10 @@ public class AuthenticationController {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
 
         authenticationManager.authenticate(authToken);
-        User user = userService.findBy(username).orElseThrow(UserNotFoundException::new);
+
+        Optional<User> byUsername = userService.findBy(username);
+        if (byUsername.isEmpty()) throw new UserNotFoundException(username);
+        User user = byUsername.get();
 
         Jwt jwt = Jwt.createFor(user);
 

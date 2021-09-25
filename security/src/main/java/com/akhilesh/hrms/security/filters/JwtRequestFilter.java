@@ -1,4 +1,4 @@
-package com.akhilesh.hrms.security.request.filters;
+package com.akhilesh.hrms.security.filters;
 
 import com.akhilesh.hrms.security.domain.exceptions.UserNotFoundException;
 import com.akhilesh.hrms.security.domain.models.Jwt;
@@ -20,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -41,7 +42,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             String bearerToken = authorizationHeader.substring(7);
             Jwt jwt = Jwt.fromValue(bearerToken);
             Username username = jwt.extractUsername();
-            User user = userService.findBy(username).orElseThrow(UserNotFoundException::new);
+            Optional<User> byUsername = userService.findBy(username);
+            if (byUsername.isEmpty()) throw new UserNotFoundException(username);
+            User user = byUsername.get();
             UserDetails userDetails = user.getUserDetails();
             if (jwt.isValidFor(user)) {
                 UsernamePasswordAuthenticationToken userPassAuthToken

@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 public class PasswordResetController {
 
@@ -45,7 +47,9 @@ public class PasswordResetController {
     String generatePasswordResetToken(@Validated @RequestBody PasswordResetTokenRequest request) {
 
         Username username = new Username(request.getUsername());
-        User user = userService.findBy(username).orElseThrow(UserNotFoundException::new);
+        Optional<User> byUsername = userService.findBy(username);
+        if (byUsername.isEmpty()) throw new UserNotFoundException(username);
+        User user = byUsername.get();
 
         PasswordResetCode passwordResetCode = PasswordResetCode.forUser(user);
         String secretCode = passwordResetCode.value();
@@ -66,8 +70,10 @@ public class PasswordResetController {
 
         Password newPassword = new Password(request.getPassword());
         Username username = new Username(request.getUsername());
-        User user = userService.findBy(username)
-                .orElseThrow(UserNotFoundException::new);
+        Optional<User> byUsername = userService.findBy(username);
+        if (byUsername.isEmpty()) throw new UserNotFoundException(username);
+        User user = byUsername.get();
+
         PasswordResetCode passwordResetCode = codeService.findForUser(user)
                 .orElseThrow(PasswordResetCodeNotFoundException::new);
 

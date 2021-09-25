@@ -1,6 +1,6 @@
 package com.akhilesh.hrms.security.configs;
 
-import com.akhilesh.hrms.security.request.filters.JwtRequestFilter;
+import com.akhilesh.hrms.security.filters.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
