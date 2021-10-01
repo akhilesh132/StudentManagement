@@ -1,13 +1,9 @@
 package com.akhilesh.hrms.security.domain.models;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public final class Username {
-    @NotNull
-    @NotEmpty
+
     private final String username;
 
     public Username(String username) {
