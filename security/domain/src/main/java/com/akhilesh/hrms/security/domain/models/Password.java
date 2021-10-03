@@ -1,13 +1,13 @@
 package com.akhilesh.hrms.security.domain.models;
 
 import com.akhilesh.hrms.security.domain.exceptions.PasswordCriteriaException;
-import org.passay.CharacterRule;
-import org.passay.EnglishCharacterData;
-import org.passay.IllegalCharacterRule;
-import org.passay.LengthRule;
-import org.passay.PasswordData;
-import org.passay.PasswordValidator;
-import org.passay.RuleResult;
+//import org.passay.CharacterRule;
+//import org.passay.EnglishCharacterData;
+//import org.passay.IllegalCharacterRule;
+//import org.passay.LengthRule;
+//import org.passay.PasswordData;
+//import org.passay.PasswordValidator;
+//import org.passay.RuleResult;
 
 public final class Password {
     private static final PasswordCriteriaValidator criteriaValidator = new PasswordCriteriaValidator();
@@ -52,19 +52,20 @@ public final class Password {
         private final char[] illegalCharacters = new char[]{'#'};
 
         public boolean isCriteriaViolated(String password) {
-            if (password == null || password.isEmpty()) return false;
+            if (password == null || password.isEmpty()) return true;
 
-            PasswordData passwordData = new PasswordData(password);
-            PasswordValidator passwordValidator = new PasswordValidator(
-                    new LengthRule(8, 16),
-                    new IllegalCharacterRule(illegalCharacters),
-                    new CharacterRule(EnglishCharacterData.UpperCase, 1),
-                    new CharacterRule(EnglishCharacterData.LowerCase, 1),
-                    new CharacterRule(EnglishCharacterData.Digit, 1),
-                    new CharacterRule(EnglishCharacterData.Special, 1)
-            );
-            RuleResult result = passwordValidator.validate(passwordData);
-            return !result.isValid();
+//            PasswordData passwordData = new PasswordData(password);
+//            PasswordValidator passwordValidator = new PasswordValidator(
+//                    new LengthRule(8, 16),
+//                    new IllegalCharacterRule(illegalCharacters),
+//                    new CharacterRule(EnglishCharacterData.UpperCase, 1),
+//                    new CharacterRule(EnglishCharacterData.LowerCase, 1),
+//                    new CharacterRule(EnglishCharacterData.Digit, 1),
+//                    new CharacterRule(EnglishCharacterData.Special, 1)
+//            );
+//            RuleResult result = passwordValidator.validate(passwordData);
+//            return !result.isValid();
+            return false;
         }
 
     }

@@ -1,20 +1,25 @@
 package com.akhilesh.hrms.security.domain.models;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.function.Function;
+
 
 public class AccessToken {
 
-    private static final String SECRET = "secret";
-    private final String value;
+    private static final Algorithm algorithm = Algorithm.HMAC256("secret");
+    private static final JWTVerifier jwtVerifier = JWT.require(algorithm)
+            .withIssuer("auth0")
+            .build();
+    private final String jwt;
+
 
     private AccessToken(String value) {
-        this.value = value;
+        this.jwt = value;
     }
 
     public static AccessToken fromValue(String value) {
@@ -22,13 +27,10 @@ public class AccessToken {
     }
 
     public static AccessToken createFor(User user) {
-        String token = Jwts.builder()
-                .setClaims(new HashMap<>())
-                .setSubject(user.getUsername().value())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .signWith(SignatureAlgorithm.HS256, SECRET)
-                .compact();
+        String token = JWT.create().withSubject(user.getUsername().value())
+                .withIssuedAt(new Date())
+                .withIssuer("auth0")
+                .sign(algorithm);
         return fromValue(token);
     }
 
@@ -38,29 +40,20 @@ public class AccessToken {
         return username.equals(user.getUsername()) && isNotExpired();
     }
 
-    public Claims extractAllClaims() {
-        return Jwts.parser()
-                .setSigningKey(SECRET)
-                .parseClaimsJws(value)
-                .getBody();
-    }
-
     public String value() {
-        return value;
+        return jwt;
     }
 
     public Username extractUsername() {
-        String subject = extractClaim(Claims::getSubject);
+        DecodedJWT decodedJWT = jwtVerifier.verify(jwt);
+        String subject = decodedJWT.getSubject();
         return new Username(subject);
-    }
 
-    private <T> T extractClaim(Function<Claims, T> claimResolver) {
-        final Claims claims = extractAllClaims();
-        return claimResolver.apply(claims);
     }
 
     private Date extractExpiration() {
-        return extractClaim(Claims::getExpiration);
+        DecodedJWT decodedJWT = jwtVerifier.verify(jwt);
+        return decodedJWT.getExpiresAt();
     }
 
 
