@@ -7,4 +7,5 @@ module com.akhilesh.hrms.security.config {
     requires spring.security.web;
     requires com.akhilesh.hrms.security.persistence;
     requires com.akhilesh.hrms.security.service;
+    requires spring.security.crypto;
 }
