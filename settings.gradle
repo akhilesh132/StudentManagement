@@ -7,6 +7,6 @@ pluginManagement {
 }
 rootProject.name = 'hrms'
 
-includeBuild('app')
-includeBuild('security')
+includeBuild ('app')
+includeBuild ('security')
 
