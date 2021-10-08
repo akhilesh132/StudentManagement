@@ -1,8 +1,8 @@
 rootProject.name = 'security'
 
-include(':api')
-include(':filter')
-include(':domain')
-include(':service')
-include(':config')
-include(':persistence')
+include('api')
+include('filter')
+include('domain')
+include('service')
+include('config')
+include('persistence')
