@@ -8,6 +8,9 @@ repositories {
     maven { url 'https://repo.spring.io/snapshot' }
 }
 
+group("com.akhilesh.hrms.security")
+version("0.0.1-SNAPSHOT")
+
 dependencies {
     implementation project(':domain')
     implementation project(':filter')

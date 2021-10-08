@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+    id 'eclipse'
+    id "com.github.johnrengelman.shadow" version "7.1.0"
+}
+
+group("com.akhilesh.hrms.security")
+version("0.0.1-SNAPSHOT")
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/snapshot' }
+}
+
+shadowJar {
+    dependencies {
+        include project(":api")
+        include project(":config")
+        include project(":domain")
+        include project(":filter")
+        include project(":persistence")
+        include project(":service")
+    }
+}
+
+dependencies {
+    implementation project(":api")
+    implementation project(":config")
+    implementation project(":domain")
+    implementation project(":filter")
+    implementation project(":persistence")
+    implementation project(":service")
+}
